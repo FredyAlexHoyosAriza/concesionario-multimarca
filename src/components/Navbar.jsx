@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-/*Nota: la recomendacion para un Navbar usamos una etiqueta nav dentro de la cual va una
+/*Nota: la recomendacion para un NavBar usamos una etiqueta nav dentro de la cual va una
 etiqueta ul y dentro tantos li como sean necesarios. my-3 => margin: 3rem 0; 1=0.25rem*/
-const Navbar = () => {
+const NavBar = () => {
   return (
     <nav className='bg-violet-300'>
       <ul className='flex justify-between my-4'>
@@ -24,4 +24,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default NavBar

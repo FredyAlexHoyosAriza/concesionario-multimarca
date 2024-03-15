@@ -1,0 +1,7 @@
+.font-tahoma {
+  font-family: Tahoma;
+}
+
+.boton {
+  @apply block w-3/5 h-10 my-2 mx-auto text-xl bg-gray-900 border-2 border-blue-200 rounded-lg min-w-32 hover:cursor-pointer;
+}
