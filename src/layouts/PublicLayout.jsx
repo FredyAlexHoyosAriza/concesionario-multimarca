@@ -7,11 +7,17 @@ import { Outlet } from 'react-router-dom'
 // de los otros componentes en el mismo contenedor
 const PublicLayout = () => {
   return (
-    <div className='flex flex-col h-screen justify-around '>
+    // Con Navbar y Footer fijo
+    <div className='flex flex-col h-screen justify-around mx-2'>
       <Navbar />
       <main className='h-screen overflow-y-scroll bg-blue-400'><Outlet /></main>
       <Footer />
     </div>
+    // Con Navbar fijo y footer movil
+    /*<div className='h-screen overflow-y-scroll bg-blue-400'>
+        <main className='h-full'><Outlet /></main>
+        <Footer />
+      </div>*/
   )
 }
 
