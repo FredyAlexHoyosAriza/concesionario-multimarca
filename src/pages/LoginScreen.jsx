@@ -1,14 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+// appearance-none focus:outline-none
 const LoginScreen = () => {
   return (
     <>
-      <h1 className='mb-1 pt-4 ml-auto mr-auto text-center text-2xl'>Inicia sesión en tu cuenta</h1>
-      <form className='w-7/12 min-w-72 max-w-lg ml-auto mr-auto pb-2 text-lg' method='post' action=''>
+      <h1 className='mb-1 pt-4 ml-auto mr-auto text-center text-2xl font-bold'>Inicia sesión en tu cuenta</h1>
+      <form className='w-3/5 min-w-72 max-w-lg ml-auto mr-auto pb-2 text-lg' method='post' action=''>
         <fieldset className='py-8 border-b-4 border-slate-800'>
-          <label htmlFor='email' className='mb-2 mt-2'>Ingrese su email: <input type='email' className='w-full mt-2 min-h-2 rounded-lg bg-blue-950 text-white p-2 hover:cursor-pointer' id='email' name='email' required /></label>
-          <label htmlFor='password' className='mb-2 mt-2'>Ingrese su contraseña: <input type='password' className='w-full mt-2 min-h-2 rounded-lg bg-blue-950 text-white p-2  hover:cursor-pointer' id='password' name='password' pattern="[a-z0-5]{8,}" required /></label>
+          <label htmlFor='email' className='block mb-2 mt-2'>Ingrese su email: <input type='email' className='w-full mt-2 min-h-2 rounded-lg bg-blue-950 text-white p-2 border-2 border-slate-700 cursor-pointer' id='email' name='email' required /></label>
+          <label htmlFor='password' className='block mb-2 mt-2'>Ingrese su contraseña: <input type='password' className='w-full mt-2 min-h-2 rounded-lg bg-blue-950 text-white p-2 border-2 border-slate-700  cursor-pointer' id='password' name='password' pattern="[a-z0-5]{8,}" required /></label>
         </fieldset>
         <fieldset className='py-6 border-b-4 border-slate-800'>
           <label htmlFor='record' className='block mb-2 mt-2'>
