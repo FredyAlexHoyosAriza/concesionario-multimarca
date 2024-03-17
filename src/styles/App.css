@@ -5,3 +5,16 @@
 .boton {
   @apply block w-3/5 h-10 my-2 mx-auto text-xl bg-gray-900 border border-blue-200 rounded-lg min-w-32 hover:cursor-pointer;
 }
+
+.button {
+  margin: 0;
+  padding: 0;
+  background-color: #0e2247;
+  color: white;
+  display: inline-block; /* bloque en linea */
+  font-size: 1.25em; /*16px */
+  /*box-sizing: border-box; /* El tamaño de caja no cambia, aunque se agregue un padding. De
+  esta forma el pading crece hacia dentro.*/
+}
+
+/*<a href="#" className="boton text-center appearance-none"><i class="fas fa-dog text-lime-300 mr-7"></i>Continuar con Google</a> */

@@ -14,7 +14,7 @@ const NavBar = () => {
         <li>Navegacion 2</li>
         <li>Navegacion 3</li>
         <li>Navegacion 4</li>
-        <li className='p-2 bg-white'>
+        <li className='p-2'>
           <Link to={'/login'}>
             <button className='bg-indigo-500 p-2 text-white rounded-lg shadow-gray-400s hover:scale-125 hover:bg-indigo-900'>Login</button>
           </Link>
