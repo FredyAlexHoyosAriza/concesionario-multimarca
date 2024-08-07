@@ -8,7 +8,7 @@ import { Outlet } from 'react-router-dom'
 const PublicLayout = () => {
   return (
     // Con NavBar y Footer fijo
-    <div className='flex flex-col h-screen justify-around mx-2'>
+    <div className='flex flex-col h-screen justify-around'>
       <NavBar />
       <main className='h-screen overflow-y-scroll bg-blue-400'><Outlet /></main>
       <Footer />
