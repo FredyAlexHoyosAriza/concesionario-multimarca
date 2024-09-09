@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import googleIcon from '../media/buscar.png'
-import homeIcon from '../media/casa2.png'
+import googleIcon from 'media/buscar.png'
+import homeIcon from 'media/casa2.png'
 
 // appearance-none focus:outline-none
 const LoginScreen = () => { // className='flex items-center' form className='w-3/5

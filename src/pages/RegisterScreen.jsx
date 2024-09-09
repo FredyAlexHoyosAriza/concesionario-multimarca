@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import googleIcon from '../media/buscar.png'
-import homeIcon from '../media/casa2.png'
+import googleIcon from 'media/buscar.png'
+import homeIcon from 'media/casa2.png'
 
 const RegisterScreen = () => {
   return (

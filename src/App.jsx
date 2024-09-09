@@ -1,11 +1,11 @@
-import LoginScreen from './pages/LoginScreen';
-import './styles/App.css';
-import RegisterScreen from './pages/RegisterScreen';
-import Index from './pages/Index';
-import AdminScreen from './pages/admin/AdminScreen';
-import PublicLayout from './layouts/PublicLayout';
-import PrivateLayout from './layouts/PrivateLayout';
-import AuthLayout from './layouts/AuthLayout';
+import LoginScreen from 'pages/LoginScreen';
+import 'styles/App.css';
+import RegisterScreen from 'pages/RegisterScreen';
+import Index from 'pages/Index';
+import AdminScreen from 'pages/admin/AdminScreen';
+import PublicLayout from 'layouts/PublicLayout';
+import PrivateLayout from 'layouts/PrivateLayout';
+import AuthLayout from 'layouts/AuthLayout';
 
 import {
   BrowserRouter as Router,

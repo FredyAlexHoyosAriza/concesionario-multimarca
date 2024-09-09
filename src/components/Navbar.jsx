@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import concessionaireLogo from '../media/concesionario-de-coches.png'
+import concessionaireLogo from 'media/concesionario-de-coches.png'
 
 /*Nota: la recomendacion para un NavBar usamos una etiqueta nav dentro de la cual va una
 etiqueta ul y dentro tantos li como sean necesarios. my-3 => margin: 3rem 0; 1=0.25rem*/

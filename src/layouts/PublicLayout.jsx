@@ -1,6 +1,6 @@
 import React from 'react'
-import NavBar from '../components/NavBar'
-import Footer from '../components/Footer'
+import NavBar from 'components/NavBar'
+import Footer from 'components/Footer'
 import { Outlet } from 'react-router-dom'
 
 // h-screen y h-full: contenedor del tamaño maximo luego de restar la altura
