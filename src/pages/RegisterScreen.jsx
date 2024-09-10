@@ -29,7 +29,7 @@ const RegisterScreen = () => {
         </fieldset>
         <fieldset className='py-3 border-b-4 border-slate-800'>
           <label htmlFor="terms-and-conditions" className='block mb-2 mt-2 hover:cursor-pointer'>
-            <input id="terms-and-conditions" type="checkbox" required name="terms-and-conditions" checked /> Acepto <a href="https://www.google.com.co/" className='underline text-lime-300'>terminos y condiciones</a>
+            <input id="terms-and-conditions" type="checkbox" required name="terms-and-conditions" checked /> Acepto <a href="https://www.google.com.co/" target='_blank' rel="noopener noreferrer" className='underline text-lime-300'>terminos y condiciones</a>
           </label>
           <label htmlFor='record' className='block mb-2 mt-2 hover:cursor-pointer'>
             <input type='checkbox' id='record' name='record' checked /> Recordar correo y contraseña
