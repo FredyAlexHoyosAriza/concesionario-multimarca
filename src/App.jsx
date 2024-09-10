@@ -19,24 +19,24 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route element={<PrivateLayout />}>
-          <Route path='/admin/vehicles' element={
+        <Route path='/admin' element={<PrivateLayout />}>
+          <Route path='vehicles' element={
             <ManageVehicles />} />
-          <Route path='/admin/clients' element={
+          <Route path='clients' element={
             <ManageClients />} />
-          <Route path='/admin' element={
+          <Route index element={
             <AdminScreen />} />
         </Route>
 
-        <Route element={<AuthLayout />}>
-          <Route path='/register' element={
+        <Route path='/' element={<AuthLayout />}>
+          <Route path='register' element={
             <RegisterScreen />} />
-          <Route path='/login' element={
+          <Route path='login' element={
             <LoginScreen />} />
         </Route>
 
-        <Route element={<PublicLayout />}>
-          <Route path='/' element={
+        <Route path='/' element={<PublicLayout />}>
+          <Route index element={
             <Index />} />
         </Route>
       </Routes>
