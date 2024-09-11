@@ -17,5 +17,9 @@
   esta forma el pading crece hacia dentro.*/
 }
 
+.boton:hover {
+  background-color: #01050b;
+}
+
 /*<a href="#" className="boton text-center appearance-none"><i class="fas fa-dog text-lime-300 mr-7"></i>Continuar con Google</a>
 <img src={homeIcon} alt='Home' className='ml-2 w-12 h-auto bg-white' /> */

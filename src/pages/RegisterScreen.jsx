@@ -5,7 +5,8 @@ import googleIcon from 'media/buscar.png'
 const RegisterScreen = () => {
   return (
     <form className='w-fit min-w-72 max-w-lg ml-auto mr-auto pb-2 text-base' method='post' action=''>
-      <fieldset className='py-6 border-b-4 border-slate-800 appearance-none'>
+      <legend className='text-center text-2xl font-bold'>Crea tu cuenta</legend>
+      <fieldset className='pb-6 pt-4 border-b-4 border-slate-800 appearance-none'>
         <div className='flex justify-between'>
           <label className='block mb-2 mt-2 w-1/2' htmlFor="first-name"><span className='inline-block pl-2'>Nombres:</span><input className='w-full mt-1 min-h-2 rounded-lg bg-blue-950 text-white px-2 py-1 border-2 border-slate-600 cursor-pointer' id="first-name" name="first-name" type="text" required /></label>
           <label className='block mb-2 mt-2 w-1/2' htmlFor="last-name"><span className='inline-block pl-2'>Apellidos:</span><input className='w-full mt-1 min-h-2 rounded-lg bg-blue-950 text-white px-2 py-1 border-2 border-slate-600 cursor-pointer' id="last-name" name="last-name" type="text" required /></label>
@@ -31,10 +32,10 @@ const RegisterScreen = () => {
         <span>¿Ya tienes cuenta?  <Link to={'/login'} className='underline text-lime-300 ml-2'>Inicia sesión</Link></span>          
       </div>
       <fieldset className='py-4 mt-2'>
-        <Link to={'/admin'}>
-          <input type='submit' value={'Registrate'} className='boton' />
+        <Link to='/admin'>
+          <input type='submit' value='Registrate' className='boton' />
         </Link>
-        <Link to={'/'}>
+        <Link to='/'>
           <button className='boton'><img src={googleIcon} alt="Google" className='inline w-5 h-auto mr-4 mb-1' /><span className='inline-block mb-1'>Registro con Google</span></button>
         </Link>
       </fieldset>

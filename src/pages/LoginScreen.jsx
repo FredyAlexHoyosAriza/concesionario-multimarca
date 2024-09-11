@@ -6,7 +6,8 @@ import googleIcon from 'media/buscar.png'
 const LoginScreen = () => { // className='flex items-center' form className='w-3/5
   return (
     <form className='w-fit min-w-72 max-w-lg ml-auto mr-auto pb-2 text-lg' method='post' action=''>
-      <fieldset className='py-6 border-b-4 border-slate-800'>
+      <legend className='text-center text-2xl font-bold'>Inicia sesión en tu cuenta</legend>
+      <fieldset className='pb-6 pt-4 border-b-4 border-slate-800'>
         <label htmlFor='email' className='block mb-2 mt-2'>Ingrese su email: <input type='email' className='w-full mt-2 min-h-2 rounded-lg bg-blue-950 text-white p-2 border-2 border-slate-700 cursor-pointer' id='email' name='email' required /></label>
         <label htmlFor='password' className='block mb-2 mt-2'>Ingrese su contraseña: <input type='password' className='w-full mt-2 min-h-2 rounded-lg bg-blue-950 text-white p-2 border-2 border-slate-700  cursor-pointer' id='password' name='password' pattern="[a-z0-5]{8,}" required /></label>
         <label htmlFor='record' className='block mt-5 hover:cursor-pointer'>
