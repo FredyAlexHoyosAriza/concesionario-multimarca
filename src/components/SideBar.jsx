@@ -13,6 +13,9 @@ const SideBar = () => {
           <Link to={'/admin/clients'}>Gestionar clientes</Link>
         </li>
         <li>
+          <Link to={'/admin/age'}>¿Es mayor de edad?</Link>
+        </li>
+        <li>
           <Link to={'/admin'}>Inicio panel administración</Link>
         </li>
       </ul>

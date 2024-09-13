@@ -14,6 +14,7 @@ import {
 } from 'react-router-dom';
 import ManageClients from './pages/admin/ManageClients';
 import ManageVehicles from './pages/admin/ManageVehicles';
+import ClientsAge from 'pages/admin/ClientsAge';
 
 export default function App() {
   return (
@@ -24,6 +25,8 @@ export default function App() {
             <ManageVehicles />} />
           <Route path='clients' element={
             <ManageClients />} />
+          <Route path='age' element={
+            <ClientsAge />} />
           <Route index element={
             <AdminScreen />} />
         </Route>
