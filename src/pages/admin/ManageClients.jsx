@@ -5,19 +5,23 @@ import React, { useState, useEffect } from "react";
 const ManageClients = () => {
   const [edad, setEdad] = useState(null);
   const [mensaje, setMensaje] = useState("");
+  const [color, setColor] = useState("");
 
   const saberSiYaEsMayor = () => {
+    let color = 'text-amber-800';
     let message = "Se desconoce su edad";
     if (edad === null) {
     } else {
-      message = "Usted aún no es mayor de edad";
       if (edad < 18) {
+        message = "Usted aún no es mayor de edad";
+        color = 'text-red-600';
       } else {
         message = "Usted ya es mayor de edad";
+        color = 'text-violet-800';
       }
     }
     setMensaje(message);
-    console.log(message);
+    setColor(color);
   };
 
   return (
@@ -35,7 +39,7 @@ const ManageClients = () => {
             onChange={(e) => setEdad(e.target.value)}
           />
         </label>
-        <p className="text-center">{mensaje}</p>
+        <p className={`text-center text-3xl ${color}`}>{mensaje}</p>
         <button
           onClick={saberSiYaEsMayor}
           type="button"
