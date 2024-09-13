@@ -30,11 +30,11 @@ const RegisterScreen = () => {
       </fieldset>
       <fieldset className='mt-4 pb-6 border-b-4 border-slate-800'>
         <Link to='/admin'>
-          <button type='submit' className='boton'>Registrate</button>
+          <button type='submit' className='boton'>Registrar</button>
           {/* <input type='submit' value='Registrate' className='boton' /> */}
         </Link>
         <Link to='/'>
-          <button className='boton'><img src={googleIcon} alt="Google" className='inline w-5 h-auto mr-4 mb-1' /><span className='inline-block mb-1'>Registro con Google</span></button>
+          <button className='boton'><img src={googleIcon} alt="Google" className='inline w-5 h-auto mr-4 mb-1' /><span className='inline-block mb-1'>Registrar con Google</span></button>
         </Link>
       </fieldset>
       <div className='mt-2 py-4 text-lg flex justify-between'>

@@ -16,7 +16,7 @@ const LoginScreen = () => { // className='flex items-center' form className='w-3
       </fieldset>
       <fieldset className='mt-5 pb-6 border-b-4 border-slate-800'>
         <Link to={'/admin'}>
-          <button type='submit' className='boton'>Iniciar sesión</button>
+          <button type='submit' className='boton'>Continuar</button>
           {/* <input type='submit' value={'Iniciar sesión'} className='boton' /> */}
         </Link> 
         <Link to={'/'}>
