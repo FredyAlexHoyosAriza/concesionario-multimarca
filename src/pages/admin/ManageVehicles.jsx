@@ -59,11 +59,22 @@ const vehicles = [
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
   const [vehiculos, setVehiculos] = useState([]);
+  const [coloresBoton, setColoresBoton] = useState('bg-indigo-700 text-white');
+
   useEffect(() => {
     /* Obtener lista de vehículos desde el backend, que le entraga un archivo JSON, que es
     asignado a un estado, y por ello podemos trabajar como queramos con esta información*/
     setVehiculos(vehicles);
   }, []);
+
+  useEffect(() => {
+    if (showTable) {
+      setColoresBoton('bg-indigo-700 text-white')
+    } else {
+      setColoresBoton('bg-green-700 text-gray-50')      
+    }  
+  }, [showTable])
+  
 
   return (
     <div className="flex-grow mt-4 mx-4 flex flex-col items-center">
@@ -73,7 +84,7 @@ const ManageVehicles = () => {
         </h2>
         <button
           onClick={() => setShowTable(!showTable)}
-          className="rounded bg-indigo-700 border-2 p-2 text-xl text-white"
+          className={`rounded border-2 p-2 text-xl ${showTable?'bg-indigo-700 text-white':'bg-green-700 text-gray-50'}`}
         >
           {showTable ? "Crear vehículo" : "Tabla vehículos"}
         </button>
@@ -96,8 +107,8 @@ const VehicleTable = ({ listaVehiculos }) => {
   }, [listaVehiculos]);
 
   return (
-    <div className="text-xl text-center text-gray-900">
-      <legend className="font-extrabold my-2">Todos los vehículos</legend>
+    <div className="text-xl text-gray-900">
+      <legend className="text-center font-extrabold my-2">Todos los vehículos</legend>
       <table>
         <thead>
           <tr>
