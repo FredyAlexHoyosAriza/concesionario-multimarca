@@ -8,7 +8,7 @@ const PrivateLayout = () => {
   return (
     <div className='flex w-screen h-screen'>
       <SideBar />
-      <main className='flex items-center justify-center w-screen h-auto bg-blue-400 overflow-auto'><Outlet /></main>
+      <main className='flex items-start justify-center w-screen h-auto p-4 bg-blue-400 overflow-auto'><Outlet /></main>
     </div>
   )
 }
