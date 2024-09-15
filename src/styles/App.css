@@ -1,5 +1,8 @@
-input:hover {
-  box-shadow: 0 0 0 0.1em rgb(168, 163, 186);
+input:hover, select:hover {
+  box-shadow: 0 0 0 0.15em rgb(168, 163, 186);
+}
+input:focus, select:focus {
+  outline: 2px solid rgb(96, 96, 206);
 }
 
 .font-tahoma {

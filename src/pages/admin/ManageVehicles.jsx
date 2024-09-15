@@ -48,7 +48,8 @@ const vehicles = [
     version: "Caminos",
     modelo: 2014,
     color: "rojo",
-  },  {
+  },
+  {
     marca: "Chevrolet",
     version: "Onix",
     modelo: 2012,
@@ -59,7 +60,7 @@ const vehicles = [
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
   const [vehiculos, setVehiculos] = useState([]);
-  const [coloresBoton, setColoresBoton] = useState('bg-indigo-700 text-white');
+  // const [coloresBoton, setColoresBoton] = useState("bg-indigo-700 text-white");
 
   useEffect(() => {
     /* Obtener lista de vehículos desde el backend, que le entraga un archivo JSON, que es
@@ -67,14 +68,17 @@ const ManageVehicles = () => {
     setVehiculos(vehicles);
   }, []);
 
-  useEffect(() => {
-    if (showTable) {
-      setColoresBoton('bg-indigo-700 text-white')
-    } else {
-      setColoresBoton('bg-green-700 text-gray-50')      
-    }  
-  }, [showTable])
-  
+  const saveVehiculo = ({ marca, modelo, version, color }) => {
+    setVehiculos((prevVehiculos) => [
+      ...prevVehiculos,
+      {
+        marca: marca,
+        modelo: modelo,
+        version: version,
+        color: color,
+      },
+    ]);
+  };
 
   return (
     <div className="flex-grow mt-4 mx-4 flex flex-col items-center">
@@ -84,7 +88,9 @@ const ManageVehicles = () => {
         </h2>
         <button
           onClick={() => setShowTable(!showTable)}
-          className={`rounded border-2 p-2 text-xl ${showTable?'bg-indigo-700 text-white':'bg-green-700 text-gray-50'}`}
+          className={`rounded border-2 p-2 text-xl text-white bg-${
+            showTable ? "indigo" : "green"
+          }-700`}
         >
           {showTable ? "Crear vehículo" : "Tabla vehículos"}
         </button>
@@ -92,7 +98,7 @@ const ManageVehicles = () => {
       {showTable ? (
         <VehicleTable listaVehiculos={vehiculos} />
       ) : (
-        <AddDBVVehicle />
+        <AddDBVVehicle infoNuevoVehiculo={saveVehiculo} />
       )}
     </div>
   );
@@ -108,14 +114,16 @@ const VehicleTable = ({ listaVehiculos }) => {
 
   return (
     <div className="text-xl text-gray-900">
-      <legend className="text-center font-extrabold my-2">Todos los vehículos</legend>
+      <legend className="text-center font-extrabold my-2">
+        Todos los vehículos
+      </legend>
       <table>
         <thead>
           <tr>
-            <th>    Marca      </th>
-            <th>    Versión    </th>
-            <th>    Modelo     </th>
-            <th>    Color      </th>
+            <th> Marca </th>
+            <th> Versión </th>
+            <th> Modelo </th>
+            <th> Color </th>
           </tr>
         </thead>
         <tbody>
@@ -135,20 +143,92 @@ const VehicleTable = ({ listaVehiculos }) => {
   );
 };
 
-const AddDBVVehicle = () => {
+const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
+  const [marca, setMarca] = useState("");
+  const [modelo, setModelo] = useState("");
+  const [version, setVersion] = useState("");
+  const [color, setColor] = useState("");
+
   return (
-    <form action="" className="text-xl text-center">
-      <legend className="font-bold my-2">
+    <form action="" className="text-xl">
+      <legend className="font-bold my-2 text-center">
         Formulario de creacion de vehículo
       </legend>
-      <fieldset className="grid grid-cols-2">
-        <input type="text" className="m-1" placeholder="Marca" />
-        <input type="text" className="m-1" placeholder="Modelo" />
-        <input type="text" className="m-1" placeholder="Versión" />
-        <input type="text" className="m-1" placeholder="Color" />
+      <fieldset>
+        <label htmlFor="marca" className="block">
+          <span className="inline-block pl-2">Marca: </span>
+          <select
+            value={marca}
+            onChange={(e) => setMarca(e.target.value)}
+            id="marca"
+            name="marca"
+            className="w-full mt-1 min-h-2 rounded-lg"
+            required
+          >
+            <option value="" disabled selected>
+              Seleccione una marca
+            </option>
+            <option>BMW</option>
+            <option>Chevrolet</option>
+            <option>Ferrari</option>
+            <option>Ford</option>
+            <option>lamborgini</option>
+            <option>Mazda</option>
+            <option>Mustang</option>
+            <option>Renault</option>
+            <option>Tesla</option>
+            <option>Toyota</option>
+          </select>
+        </label>
+        <label htmlFor="modelo" className="block">
+          <span className="inline-block pl-2">Modelo: </span>
+          <input
+            value={modelo}
+            onChange={(e) => setModelo(e.target.value)}
+            id="modelo"
+            name="modelo"
+            type="number"
+            min={1992}
+            max={2025}
+            className="w-full mt-1 min-h-2 rounded-lg"
+            placeholder="2024"
+          />
+        </label>
+        <label htmlFor="version" className="block">
+          <span className="inline-block pl-2">Versión: </span>
+          <input
+            value={version}
+            onChange={(e) => setVersion(e.target.value)}
+            id="version"
+            name="version"
+            type="text"
+            className="w-full mt-1 min-h-2 rounded-lg"
+            placeholder="GT Fastback"
+          />
+        </label>
+        <label htmlFor="color" className="block">
+          <span className="inline-block pl-2">Color: </span>
+          <input
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            id="color"
+            name="color"
+            type="text"
+            className="w-full mt-1 min-h-2 rounded-lg"
+            placeholder="Orange"
+          />
+        </label>
         <button
-          type="submit"
-          className="col-span-2 border border-slate-800 rounded-lg mt-2 p-2 bg-green-700 text-white"
+          onClick={() =>
+            infoNuevoVehiculo({
+              marca: marca,
+              modelo: modelo,
+              version: version,
+              color: color,
+            })
+          }
+          type="button"
+          className="w-full mt-4 min-h-2 rounded-lg border-slate-800 p-2 bg-green-700 text-white"
         >
           Guardar vehículo
         </button>
