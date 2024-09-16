@@ -70,19 +70,21 @@ const ManageVehicles = () => {
     setVehiculos(vehicles);
   }, []);
 
-  const saveVehiculo = (nuevoVehiculo) => {
-    setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]);
-    setShowTable(true);
-    toast.success("🦄 Registro guaradado con exito!!!", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  const saveVehiculo = ({marca, modelo, version, color}) => {
+    if (marca !== '' && modelo !== '' && version !== '' && color !== '') {
+      setVehiculos((prevVehiculos) => [...prevVehiculos, {marca: marca, modelo:modelo, version:version, color:color}]);
+      setShowTable(true);
+      toast.success("Registro guardado con exito!!!", {/*🦄*/
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });      
+    }
   };
 
   return (
@@ -245,7 +247,7 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
             version: version,
             color: color,
           })}
-          type="button"
+          type="submit"
           className="w-full mt-4 min-h-2 rounded-lg border-slate-800 p-2 bg-green-700 text-white"
         >
           Guardar vehículo
