@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const vehicles = [
   {
@@ -68,16 +70,19 @@ const ManageVehicles = () => {
     setVehiculos(vehicles);
   }, []);
 
-  const saveVehiculo = ({ marca, modelo, version, color }) => {
-    setVehiculos((prevVehiculos) => [
-      ...prevVehiculos,
-      {
-        marca: marca,
-        modelo: modelo,
-        version: version,
-        color: color,
-      },
-    ]);
+  const saveVehiculo = (nuevoVehiculo) => {
+    setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]);
+    setShowTable(true);
+    toast.success("🦄 Registro guaradado con exito!!!", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (
@@ -87,7 +92,7 @@ const ManageVehicles = () => {
           Administración de vehículos
         </h2>
         <button
-          onClick={() => setShowTable(!showTable)}
+          onClick={() => setShowTable((prevShowTable) => !prevShowTable)}
           className={`rounded border-2 p-2 text-xl text-white bg-${
             showTable ? "indigo" : "green"
           }-700`}
@@ -100,6 +105,18 @@ const ManageVehicles = () => {
       ) : (
         <AddDBVVehicle infoNuevoVehiculo={saveVehiculo} />
       )}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };
@@ -113,11 +130,11 @@ const VehicleTable = ({ listaVehiculos }) => {
   }, [listaVehiculos]);
 
   return (
-    <div className="text-xl text-gray-900">
+    <div className="flex-grow text-xl text-gray-900">
       <legend className="text-center font-extrabold my-2">
         Todos los vehículos
       </legend>
-      <table>
+      <table className="min-w-96">
         <thead>
           <tr>
             <th> Marca </th>
@@ -150,7 +167,7 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
   const [color, setColor] = useState("");
 
   return (
-    <form action="" className="text-xl">
+    <form action="" className="text-xl lg:w-2/5">
       <legend className="font-bold my-2 text-center">
         Formulario de creacion de vehículo
       </legend>
@@ -192,6 +209,7 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
             max={2025}
             className="w-full mt-1 min-h-2 rounded-lg"
             placeholder="2024"
+            required
           />
         </label>
         <label htmlFor="version" className="block">
@@ -204,6 +222,7 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
             type="text"
             className="w-full mt-1 min-h-2 rounded-lg"
             placeholder="GT Fastback"
+            required
           />
         </label>
         <label htmlFor="color" className="block">
@@ -216,17 +235,16 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
             type="text"
             className="w-full mt-1 min-h-2 rounded-lg"
             placeholder="Orange"
+            required
           />
         </label>
         <button
-          onClick={() =>
-            infoNuevoVehiculo({
-              marca: marca,
-              modelo: modelo,
-              version: version,
-              color: color,
-            })
-          }
+          onClick={() => infoNuevoVehiculo({
+            marca: marca,
+            modelo: modelo,
+            version: version,
+            color: color,
+          })}
           type="button"
           className="w-full mt-4 min-h-2 rounded-lg border-slate-800 p-2 bg-green-700 text-white"
         >
