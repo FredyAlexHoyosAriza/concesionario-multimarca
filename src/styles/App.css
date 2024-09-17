@@ -31,3 +31,64 @@ input:focus, select:focus {
 
 /*<a href="#" className="boton text-center appearance-none"><i class="fas fa-dog text-lime-300 mr-7"></i>Continuar con Google</a>
 <img src={homeIcon} alt='Home' className='ml-2 w-12 h-auto bg-white' /> */
+
+/* Estilos de tema para el componente SideBar */
+/* Bloque y modificadores del menú */
+.menu {
+  width: 18rem;
+  height: 100vh;
+}
+
+.menu--light {
+  background-color: #d1d5db; /* bg-zinc-300 */
+}
+
+.menu--dark {
+  background-color: #1f2937; /* bg-zinc-800 */
+}
+
+/* Elementos del menú */
+.menu__list {
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  margin-left: 0.25rem;
+  font-weight: bold;
+  font-size: 1.125rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+}
+
+/* Modificadores de colores para el texto en el menú */
+.menu--light .menu__list {
+  color: #164e63; /* text-cyan-900 */
+}
+
+.menu--dark .menu__list {
+  color: #a5f3fc; /* text-cyan-200 */
+}
+
+.menu__item {
+  margin-right: 0.4rem;
+}
+
+/* Botón */
+.menu__button {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid;
+}
+
+.menu__button--light {
+  background-color: #d1d5db; /* bg-zinc-300 */
+  color: #0f172a; /* text-cyan-950 */
+  border-color: #475569; /* border-slate-800 */
+}
+
+.menu__button--dark {
+  background-color: #1f2937; /* bg-zinc-800 */
+  color: #cef4f9; /* text-cyan-200 */
+  border-color: #f1f5f9; /* border-slate-100 */
+}

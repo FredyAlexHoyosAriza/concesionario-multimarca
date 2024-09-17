@@ -70,21 +70,19 @@ const ManageVehicles = () => {
     setVehiculos(vehicles);
   }, []);
 
-  const saveVehiculo = ({marca, modelo, version, color}) => {
-    if (marca !== '' && modelo !== '' && version !== '' && color !== '') {
-      setVehiculos((prevVehiculos) => [...prevVehiculos, {marca: marca, modelo:modelo, version:version, color:color}]);
-      setShowTable(true);
-      toast.success("Registro guardado con exito!!!", {/*🦄*/
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });      
-    }
+  const saveVehiculo = (nuevoVehiculo) => {
+    setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]);
+    setShowTable(true);
+    toast.success("Registro guardado con exito!!!", {
+      /*🦄*/ position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   return (
@@ -124,13 +122,6 @@ const ManageVehicles = () => {
 };
 
 const VehicleTable = ({ listaVehiculos }) => {
-  useEffect(() => {
-    console.log(
-      "Esta es la lista de vehiculos que llega a la tabla: ",
-      listaVehiculos
-    );
-  }, [listaVehiculos]);
-
   return (
     <div className="flex-grow text-xl text-gray-900">
       <legend className="text-center font-extrabold my-2">
@@ -163,13 +154,21 @@ const VehicleTable = ({ listaVehiculos }) => {
 };
 
 const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
-  const [marca, setMarca] = useState("");
-  const [modelo, setModelo] = useState("");
-  const [version, setVersion] = useState("");
-  const [color, setColor] = useState("");
+
+  const handleSubmit = (e) => {
+    // const nuevoVehiculo = {};
+    // fd.forEach((value, key) => nuevoVehiculo[key] = value)
+    e.preventDefault();//Evita que la página se recargue con el envio, que ahora se maneja con js permitiendo ejecutar lógica previa
+    const formData = new FormData(e.currentTarget); // Obtén directamente el formulario
+    const nuevoVehiculo = Object.fromEntries(formData.entries()); // Convierte el FormData a un objeto
+    infoNuevoVehiculo(nuevoVehiculo);
+  }
 
   return (
-    <form action="" className="text-xl lg:w-2/5">
+    <form
+      onSubmit={handleSubmit}
+      className="text-xl lg:w-2/5"
+    >
       <legend className="font-bold my-2 text-center">
         Formulario de creacion de vehículo
       </legend>
@@ -177,8 +176,6 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
         <label htmlFor="marca" className="block">
           <span className="inline-block pl-2">Marca: </span>
           <select
-            value={marca}
-            onChange={(e) => setMarca(e.target.value)}
             id="marca"
             name="marca"
             className="w-full mt-1 min-h-2 rounded-lg"
@@ -202,8 +199,6 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
         <label htmlFor="modelo" className="block">
           <span className="inline-block pl-2">Modelo: </span>
           <input
-            value={modelo}
-            onChange={(e) => setModelo(e.target.value)}
             id="modelo"
             name="modelo"
             type="number"
@@ -217,8 +212,6 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
         <label htmlFor="version" className="block">
           <span className="inline-block pl-2">Versión: </span>
           <input
-            value={version}
-            onChange={(e) => setVersion(e.target.value)}
             id="version"
             name="version"
             type="text"
@@ -230,8 +223,6 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
         <label htmlFor="color" className="block">
           <span className="inline-block pl-2">Color: </span>
           <input
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
             id="color"
             name="color"
             type="text"
@@ -241,12 +232,6 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
           />
         </label>
         <button
-          onClick={() => infoNuevoVehiculo({
-            marca: marca,
-            modelo: modelo,
-            version: version,
-            color: color,
-          })}
           type="submit"
           className="w-full mt-4 min-h-2 rounded-lg border-slate-800 p-2 bg-green-700 text-white"
         >
