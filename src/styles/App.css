@@ -32,7 +32,7 @@ input:focus, select:focus {
 /*<a href="#" className="boton text-center appearance-none"><i class="fas fa-dog text-lime-300 mr-7"></i>Continuar con Google</a>
 <img src={homeIcon} alt='Home' className='ml-2 w-12 h-auto bg-white' /> */
 
-/* Estilos de tema para el componente SideBar */
+/* Estilos de tema para el componente SideBar inplmentando BEM */
 /* Bloque y modificadores del menú */
 .menu {
   width: 18rem;
