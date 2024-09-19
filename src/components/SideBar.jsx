@@ -6,15 +6,8 @@ const SideBar = () => {
   const { theme, toggleTheme } = useTheme();
   return (
     //w-72: la mitad de una pantalla mediana
-<nav className={`menu ${theme ? 'menu--light' : 'menu--dark'}`}>
-  <ul className="menu__list">
-    <li className="menu__item">
-      <button
-        className={`menu__button ${theme ? 'menu__button--light' : 'menu__button--dark'}`}
-        type="button"
-        onClick={toggleTheme}
-          >Alternar tema</button>
-        </li>
+    <nav className={`menu ${theme ? "menu--light" : "menu--dark"}`}>
+      <ul className="menu__list">
         <li>
           <Link to={"/admin/vehicles"}>Gestionar vehiculos</Link>
         </li>
@@ -25,6 +18,15 @@ const SideBar = () => {
           <Link to={"/admin"}>Inicio panel administración</Link>
         </li>
       </ul>
+      <button
+        className={`menu__button ${
+          theme ? "menu__button--light" : "menu__button--dark"
+        }`}
+        type="button"
+        onClick={toggleTheme}
+      >
+        Alternar tema
+      </button>
     </nav>
   );
 };

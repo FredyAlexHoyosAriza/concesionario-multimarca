@@ -5,55 +5,55 @@ import "react-toastify/dist/ReactToastify.css";
 const vehicles = [
   {
     marca: "Toyota",
-    version: "Sequoia",
+    gama: "Sequoia",
     modelo: 2025,
     color: "azul",
   },
   {
     marca: "Toyota",
-    version: "Corolla",
+    gama: "Corolla",
     modelo: 2023,
     color: "griz",
   },
   {
     marca: "Ford",
-    version: "Fiesta",
+    gama: "Fiesta",
     modelo: 2017,
     color: "blanco",
   },
   {
     marca: "Renault",
-    version: "Sandero",
+    gama: "Sandero",
     modelo: 2024,
     color: "rojo",
   },
   {
     marca: "Renault",
-    version: "4",
+    gama: "4",
     modelo: 1970,
     color: "rojo",
   },
   {
     marca: "Renault",
-    version: "12",
+    gama: "12",
     modelo: 1980,
     color: "rojo",
   },
   {
     marca: "Mazda",
-    version: "3",
+    gama: "3",
     modelo: 2010,
     color: "rojo",
   },
   {
     marca: "Chevrolet",
-    version: "Caminos",
+    gama: "Caminos",
     modelo: 2014,
     color: "rojo",
   },
   {
     marca: "Chevrolet",
-    version: "Onix",
+    gama: "Onix",
     modelo: 2012,
     color: "rojo",
   },
@@ -131,17 +131,17 @@ const VehicleTable = ({ listaVehiculos }) => {
         <thead>
           <tr>
             <th> Marca </th>
-            <th> Versión </th>
+            <th> Gama </th>
             <th> Modelo </th>
             <th> Color </th>
           </tr>
         </thead>
         <tbody>
-          {listaVehiculos.map(({ marca, version, modelo, color }) => {
+          {listaVehiculos.map(({ marca, gama, modelo, color }) => {
             return (
               <tr>
                 <td>{marca}</td>
-                <td>{version}</td>
+                <td>{gama}</td>
                 <td>{modelo}</td>
                 <td>{color}</td>
               </tr>
@@ -209,11 +209,11 @@ const AddDBVVehicle = ({ infoNuevoVehiculo }) => {
             required
           />
         </label>
-        <label htmlFor="version" className="block">
-          <span className="inline-block pl-2">Versión: </span>
+        <label htmlFor="gama" className="block">
+          <span className="inline-block pl-2">Gama: </span>
           <input
-            id="version"
-            name="version"
+            id="gama"
+            name="gama"
             type="text"
             className="w-full mt-1 min-h-2 rounded-lg"
             placeholder="GT Fastback"
