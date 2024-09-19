@@ -8,8 +8,10 @@ import PrivateLayout from "layouts/PrivateLayout";
 import AuthLayout from "layouts/AuthLayout";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ManageClients from "./pages/admin/ManageClients";
-import ManageVehicles from "./pages/admin/ManageVehicles";
+import ManageClients from "pages/admin/ManageClients";
+import ManageSales from "pages/admin/ManageSales";
+import ManageVehicles from "pages/admin/ManageVehicles";
+import ManageProfile from "pages/admin/ManageProfile";
 import { ThemeProvider } from "context/ThemeProvider";
 
 export default function App() {
@@ -20,6 +22,8 @@ export default function App() {
           <Route path="/admin" element={<PrivateLayout />}>
             <Route path="vehicles" element={<ManageVehicles />} />
             <Route path="clients" element={<ManageClients />} />
+            <Route path="sales" element={<ManageSales />} />
+            <Route path="profile" element={<ManageProfile />} />
             <Route index element={<AdminScreen />} />
           </Route>
 

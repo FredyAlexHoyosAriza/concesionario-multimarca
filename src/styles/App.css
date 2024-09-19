@@ -29,13 +29,13 @@ input:focus, select:focus {
   background-color: #01050b;
 }
 
-.menu__list > li {
+.menu__list > * {
   border-radius: 1em;
   padding: 0.25em 0.5em;
 }
 
-.menu__list > li:focus-within {
-  box-shadow: 0 0 1px 3px rgb(168, 163, 186);
+.menu__list > *:focus-within {
+  box-shadow: 0 0 1px 1px rgb(161, 151, 194);
 }
 
 /*<a href="#" className="boton text-center appearance-none"><i class="fas fa-dog text-lime-300 mr-7"></i>Continuar con Google</a>
@@ -43,27 +43,27 @@ input:focus, select:focus {
 
 /* Estilos de tema para el componente SideBar inplementando BEM */
 /* Bloque y modificadores del menú */
+.menu {
+  padding: 0 0.5rem;
+}
 
 @media (max-width: 767px) { 
+  /* .side-bar {
+    display: none;
+  } */
   .menu {
     width: 100vw;
     height: auto;
-    padding: 0.5rem;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    flex-wrap: wrap;
   }
   
   /* Elementos del menú */
   .menu__list {
-    flex-grow: 0.9;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    align-items: center;
     box-sizing: border-box;
     padding: 0.5rem 0.5rem;
-    /* margin-left: 0.25rem; */
     font-weight: bold;
     font-size: 1rem;
     width: auto;
@@ -74,24 +74,18 @@ input:focus, select:focus {
   .menu {
     width: 18rem;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
   }
   
   /* Elementos del menú */
   .menu__list {
-    flex-grow: 0.9;
     box-sizing: border-box;
     padding: 0.5rem 0.5rem;
-    /* margin-left: 0.25rem; */
     font-weight: bold;
     font-size: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: auto;
+    height: 100%;
   }
 }
 
@@ -103,7 +97,7 @@ input:focus, select:focus {
   background-color: #1f2937; /* bg-zinc-800 */
 }
 /* Modificadores de colores para el texto en el menú */
-.menu--light > .menu__list {
+.menu--light .menu__list {
   color: #164e63; /* text-cyan-900 */
 }
 
@@ -113,10 +107,12 @@ input:focus, select:focus {
 
 /* Botón */
 .menu__button {
+  /* margin: 0 auto; */
   width: auto;
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: 1px solid;
+  align-self: center;
 }
 
 .menu__button--light {
