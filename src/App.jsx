@@ -10,9 +10,11 @@ import AuthLayout from "layouts/AuthLayout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ManageClients from "pages/admin/ManageClients";
 import ManageSales from "pages/admin/ManageSales";
-import ManageVehicles from "pages/admin/ManageVehicles";
+import ManageVehicles from "pages/admin/vehicles/ManageVehicles";
 import ManageProfile from "pages/admin/ManageProfile";
 import { ThemeProvider } from "context/ThemeProvider";
+import AddDBVehicle from "pages/admin/vehicles/AddDBVehicle";
+import VehicleTable from "pages/admin/vehicles/VehicleTable";
 
 export default function App() {
   return (
@@ -20,7 +22,9 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/admin" element={<PrivateLayout />}>
-            <Route path="vehicles" element={<ManageVehicles />} />
+            <Route path="vehicles" element={<ManageVehicles />}>
+              <Route path="create" element={null} />
+            </Route>
             <Route path="clients" element={<ManageClients />} />
             <Route path="sales" element={<ManageSales />} />
             <Route path="profile" element={<ManageProfile />} />

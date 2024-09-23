@@ -1,9 +1,11 @@
 import { useTheme } from "context/ThemeProvider";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import LogoConcesionario from "./LogoConcesionario";
+import useActiveRoute from "./hooks/useActiveRoute";
 
 const SideBar = () => {
+  const { pathname } = useLocation();
   const { theme, toggleTheme } = useTheme();
   // const [seleccion, setSeleccion] = useState([true, false, false, false, false]);
   // onClick={() => setSeleccion([true, false, false, false, false])}
@@ -11,7 +13,10 @@ const SideBar = () => {
     //w-72: la mitad de una pantalla mediana
     <nav className={`menu side-bar ${theme ? "menu--light" : "menu--dark"}`}>
       <ul className="menu__list">
-        <Link to={"/admin"}>
+        <Link
+          to={"/admin"}
+          className={`${"/admin" === pathname && "current-path"}`}
+        >
           <LogoConcesionario />
         </Link>
         <Ruta ruta="profile" icono="user" />
@@ -33,13 +38,16 @@ const SideBar = () => {
 };
 
 const Ruta = ({ ruta, icono }) => {
+  const isActive = useActiveRoute(ruta);
+  //${`/admin/${ruta}` === pathname && 'current-path' }
   return (
-    <li>
-      <Link to={`/admin/${ruta}`}>
-        <i className={`fas fa-${icono} mr-2`} />
-        {`Manage ${ruta}`}
-      </Link>
-    </li>
+    <Link
+      to={`/admin/${ruta}`}
+      className={`${isActive && "current-path"}`}
+    >
+      <i className={`fas fa-${icono} mr-2`} />
+      {`Manage ${ruta}`}
+    </Link>
   );
 };
 

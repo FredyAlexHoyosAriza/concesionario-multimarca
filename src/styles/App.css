@@ -34,8 +34,12 @@ input:focus, select:focus {
   padding: 0.25em 0.5em;
 }
 
-.menu__list > *:focus-within {
-  box-shadow: 0 0 1px 1px rgb(161, 151, 194);
+.menu__list > *:hover {
+  box-shadow: 0 0 1px 2px rgb(161, 151, 194);
+}
+
+.current-path {
+  box-shadow: 0 0 2px 3px rgb(161, 151, 194);
 }
 
 /*<a href="#" className="boton text-center appearance-none"><i class="fas fa-dog text-lime-300 mr-7"></i>Continuar con Google</a>
@@ -98,7 +102,7 @@ input:focus, select:focus {
 }
 /* Modificadores de colores para el texto en el menú */
 .menu--light .menu__list {
-  color: #164e63; /* text-cyan-900 */
+  color: #072731; /* text-cyan-900 */
 }
 
 .menu--dark .menu__list {
