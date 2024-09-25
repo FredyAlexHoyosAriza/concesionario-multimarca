@@ -130,3 +130,39 @@ input:focus, select:focus {
   color: #cef4f9; /* text-cyan-200 */
   border-color: #f1f5f9; /* border-slate-100 */
 }
+
+/* ESTILOS VehicleTable*/
+
+.tabla table {
+  background-color: #cef4f9;
+  overflow: scroll;
+}
+
+.tabla td, .tabla th {
+  padding: 0.1em 0.2em;
+  border: 1px solid rgb(31, 30, 30)
+}
+
+.tabla th{
+  background-color: rgb(99, 54, 248);
+  color: white;
+  padding: 0.35em auto;
+  text-align: left;
+}
+
+.tabla tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.tabla tr:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.tabla .eliminar {
+  border: 3px solid #EF4444;
+}
+
+.tabla .editar {
+  border: 3px solid #22c55e /* #6366F1; */  
+}

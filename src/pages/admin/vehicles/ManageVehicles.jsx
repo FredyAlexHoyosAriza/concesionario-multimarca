@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import VehicleTable from "./VehicleTable";
 import AddDBVehicle from "./AddDBVehicle";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const vehicles = [
   {
@@ -66,30 +66,39 @@ const vehicles = [
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
   const [vehiculos, setVehiculos] = useState([]);
+  const [getVehicles, setGetVehicles] = useState(false);
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (pathname === '/admin/vehicles/create') {
+    if (pathname === "/admin/vehicles/create") {
       setShowTable(false);
     }
-    /* Obtener lista de vehículos desde el backend, que le entraga un archivo JSON, que es
-    asignado a un estado, y por ello podemos trabajar como queramos con esta información*/
+    // updateTable();
     setVehiculos(vehicles);
-  }, []);
+  }, [getVehicles]);
+
+  const updateTable = async () => {
+    const options = {
+      method: "GET",
+      url: "http://localhost:3000/vehicle/get-all/",
+    };
+    await axios
+      .request(options)
+      .then(function (response) {
+        setVehiculos(response.data);
+        toast.success("Tabla actualizada con exito!!!");
+      })
+      .catch(function (error) {
+        console.error(error);
+        toast.error("La tabla no pudo ser actualizada");
+      });
+  };
 
   const saveVehiculo = (nuevoVehiculo) => {
-    setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]);
+    setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]); //CREATE
+    // setGetVehicles((prevGetVehicles) => !prevGetVehicles); //solo si exitoso
     setShowTable(true);
-    toast.success("Registro guardado con exito!!!", {
-      /*🦄*/ position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "colored",
-    });
+    toast.success("Registro guardado con exito!!!");
   };
 
   return (
@@ -100,7 +109,9 @@ const ManageVehicles = () => {
         </h2>
         <button
           onClick={() => setShowTable((prevShowTable) => !prevShowTable)}
-          className={`rounded border-2 p-2 text-xl text-white ${showTable ?"bg-indigo-700":"bg-green-700"}`}
+          className={`rounded border-2 p-2 text-xl text-white ${
+            showTable ? "bg-indigo-700" : "bg-green-700"
+          }`}
         >
           {showTable ? (
             <Link to={"create"}>Crear vehículo</Link>
@@ -110,12 +121,15 @@ const ManageVehicles = () => {
         </button>
       </div>
       {showTable ? (
-        <VehicleTable listaVehiculos={vehiculos} />
+        <VehicleTable
+          listaVehiculos={vehiculos}
+          setGetVehicles={setGetVehicles}
+        />
       ) : (
         <AddDBVehicle infoNuevoVehiculo={saveVehiculo} />
       )}
       <ToastContainer
-        position="bottom-center"
+        /*🦄*/ position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -124,7 +138,7 @@ const ManageVehicles = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="colored"
       />
     </div>
   );
