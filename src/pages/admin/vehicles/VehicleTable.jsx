@@ -1,11 +1,22 @@
+import { Dialog, Tooltip } from "@mui/material";
 import axios from "axios";
 import { nanoid } from "nanoid";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
+  const [busqueda, setBusqueda] = useState('');
+
+  useEffect(() => {
+    console.log(busqueda);
+  
+  }, [busqueda])
+  
+
+
   return (
     <div className="w-full text-xl text-gray-900 tabla">
+      <input value={busqueda} onChange={(e) => setBusqueda(e.target.value)} placeholder="Buscar" className="rounded-lg border border-gray-700 px-4 py-2"/>
       <legend className="text-center font-extrabold my-2">
         Todos los vehículos
       </legend>
@@ -40,6 +51,17 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   const [editar, setEditar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
   const [vehiculo, setVehiculo] = useState(vehicle);
+  const [opendDialogue, setOpenDialogue] = useState(false);
+  const btnConfirmRef = useRef(null);
+  const btnCancelRef = useRef(null);
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowRight') {
+      btnCancelRef.current.focus(); // Enfocar el botón derecho
+    } else if (e.key === 'ArrowLeft') {
+      btnConfirmRef.current.focus(); // Enfocar el botón izquierdo
+    }
+  };
 
   const handleVehicle = (e) => {
     setVehiculo((prevVehiculo) => ({
@@ -70,6 +92,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   // };
 
   const handleEdit = () => {
+    setOpenDialogue(false)
     const { modelo } = vehiculo;
     if (modelo < 1992 || modelo > 2025) {
       toast.warn("El modelo debe estar entre 1992 y 2025");
@@ -77,6 +100,9 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
       console.log(vehiculo);
       setEditar(false);
     }
+    //cada vez que cambia un registro se traen todos los registros desde DB y se renderiza la tabla
+    //aquí aún no actualiza desde BD por ello se debe resetear el estado vehículo
+    setVehiculo(vehicle);
   };
 
   // const handleDelete = async () => {
@@ -101,6 +127,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   // };
 
   const handleDelete = async () => {
+    setOpenDialogue(false)
     console.log(vehiculo);
     setEliminar(false);
   };
@@ -164,11 +191,14 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
         <div className="flex justify-evenly">
           {editar ? (
             <>
+              {/* <Tooltip title='Confirm-edit' arrow> */}
               <i
-                onClick={handleEdit}
+                onClick={() => setOpenDialogue(true)}
                 className="fas fa-check text-indigo-800 hover:text-indigo-500"
-                title="Update"
+                title="Confirm-edit"
               />
+              {/* </Tooltip>
+              <Tooltip title='Cancel' arrow> */}
               <i
                 onClick={() => {
                   setEditar(false);
@@ -177,42 +207,74 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
                 className="fas fa-times text-indigo-800 hover:text-indigo-500"
                 title="Cancel"
               />
+              {/* </Tooltip> */}
             </>
           ) : (
             <>
               {eliminar ? (
                 <>
+                  {/* <Tooltip title="Confirm-delete" arrow> */}
                   <i
-                    onClick={handleDelete}
+                    onClick={() => setOpenDialogue(true)}
                     className="fas fa-check text-red-800 hover:text-red-500"
-                    title="Delete"
+                    title="Confirm-delete"
                   />
+                  {/* </Tooltip>
+                  <Tooltip title="Cancel" arrow> */}
                   <i
-                    onClick={() => {
-                      setEliminar(false);
-                      setVehiculo(vehicle);
-                    }}
+                    onClick={() => setEliminar(false)}
                     className="fas fa-times text-red-800 hover:text-red-500"
                     title="Cancel"
                   />
+                  {/* </Tooltip> */}
                 </>
               ) : (
                 <>
+                  {/* <Tooltip title="Edit" arrow> */}
                   <i
                     onClick={() => setEditar(true)}
                     className="fas fa-pencil-alt text-indigo-800 hover:text-indigo-500"
                     title="Edit"
                   />
+                  {/* </Tooltip>
+                  <Tooltip title="Delete" arrow> */}
                   <i
                     onClick={() => setEliminar(true)}
                     className="fas fa-trash text-red-800 hover:text-red-500"
                     title="Delete"
                   />
+                  {/* </Tooltip> */}
                 </>
               )}
             </>
           )}
         </div>
+        <Dialog open={opendDialogue}>
+          <div className="flex flex-col items-center p-4 font-bold">
+            <h1>{`¿Esta seguro de ${
+              eliminar ? "eliminar" : "editar"
+            } el registro?`}</h1>
+            <div className="w-full flex justify-evenly mt-4 mb-1" onKeyDown={handleKeyDown} tabIndex="0">
+              <button
+                onClick={eliminar ? handleDelete : handleEdit}
+                ref={btnConfirmRef}
+                autoFocus
+                className={`focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 rounded-md ${
+                  eliminar ? "bg-red-500" : "bg-indigo-500"
+                } py-1 px-2 text-white`}
+              >
+                Confirmar
+              </button>
+              <button
+                onClick={() => setOpenDialogue(false)}
+                ref={btnCancelRef}
+                className="focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 rounded-md bg-gray-500 p-1 px-2 text-white"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </Dialog>
       </td>
     </tr>
   );
