@@ -5,44 +5,75 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
+  const [vehiculosBusqueda, setVehiculosBusqueda] = useState([
+    ...listaVehiculos,
+  ]);
 
   useEffect(() => {
     console.log(busqueda);
-  
-  }, [busqueda])
-  
-
+    if (busqueda !== "") {
+      setVehiculosBusqueda(
+        listaVehiculos.filter((vehiculo) => {
+          return JSON.stringify(vehiculo)
+            .toLowerCase()
+            .includes(busqueda.toLowerCase());
+        })
+      );
+    } else {
+      setVehiculosBusqueda(listaVehiculos);
+    }
+  }, [busqueda, listaVehiculos]);
 
   return (
     <div className="w-full text-xl text-gray-900 tabla">
-      <input value={busqueda} onChange={(e) => setBusqueda(e.target.value)} placeholder="Buscar" className="rounded-lg border border-gray-700 px-4 py-2"/>
+      <input
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        placeholder="Buscar"
+        className="rounded-lg border border-gray-700 px-4 py-2"
+      />
       <legend className="text-center font-extrabold my-2">
         Todos los vehículos
       </legend>
-      <table className="w-full min-w-96">
-        <thead>
-          <tr>
-            <th> Marca </th>
-            <th> Gama </th>
-            <th> Modelo </th>
-            <th> Color </th>
-            <th className="w-1/12"> Acciones </th>
-          </tr>
-        </thead>
-        <tbody>
-          {listaVehiculos.map((vehiculo) => {
-            //({ marca, gama, modelo, color, id })
-            return (
-              <VehicleRow
-                key={nanoid()}
-                vehicle={vehiculo}
-                setGetVehicles={setGetVehicles}
-              />
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="hidden sm:block">
+        <table className="w-full min-w-96">
+          <thead>
+            <tr>
+              <th> Marca </th>
+              <th> Gama </th>
+              <th> Modelo </th>
+              <th> Color </th>
+              <th className="w-1/12"> Acciones </th>
+            </tr>
+          </thead>
+          <tbody>
+            {vehiculosBusqueda.map((vehiculo) => {
+              //({ marca, gama, modelo, color, id })
+              return (
+                <VehicleRow
+                  key={nanoid()}
+                  vehicle={vehiculo}
+                  setGetVehicles={setGetVehicles}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex flex-wrap justify-around sm:hidden">
+        {vehiculosBusqueda.map(({ marca, gama, modelo, color }) => {
+          //({ marca, gama, modelo, color, id })
+          return (
+            <div key={nanoid()} className="bg-slate-500 text-white p-2 m-2 rounded-lg flex flex-col" >
+              <span>Marca: {marca} </span>
+              <span>Gama: {gama} </span>
+              <span>Modelo: {modelo} </span>
+              <span>Color: {color} </span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
@@ -50,15 +81,15 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
 const VehicleRow = ({ vehicle, setGetVehicles }) => {
   const [editar, setEditar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
-  const [vehiculo, setVehiculo] = useState(vehicle);
+  const [vehiculo, setVehiculo] = useState({ ...vehicle });
   const [opendDialogue, setOpenDialogue] = useState(false);
   const btnConfirmRef = useRef(null);
   const btnCancelRef = useRef(null);
 
   const handleKeyDown = (e) => {
-    if (e.key === 'ArrowRight') {
+    if (e.key === "ArrowRight") {
       btnCancelRef.current.focus(); // Enfocar el botón derecho
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === "ArrowLeft") {
       btnConfirmRef.current.focus(); // Enfocar el botón izquierdo
     }
   };
@@ -92,7 +123,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   // };
 
   const handleEdit = () => {
-    setOpenDialogue(false)
+    setOpenDialogue(false);
     const { modelo } = vehiculo;
     if (modelo < 1992 || modelo > 2025) {
       toast.warn("El modelo debe estar entre 1992 y 2025");
@@ -102,7 +133,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     }
     //cada vez que cambia un registro se traen todos los registros desde DB y se renderiza la tabla
     //aquí aún no actualiza desde BD por ello se debe resetear el estado vehículo
-    setVehiculo(vehicle);
+    setVehiculo({ ...vehicle });
   };
 
   // const handleDelete = async () => {
@@ -127,7 +158,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   // };
 
   const handleDelete = async () => {
-    setOpenDialogue(false)
+    setOpenDialogue(false);
     console.log(vehiculo);
     setEliminar(false);
   };
@@ -202,7 +233,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
               <i
                 onClick={() => {
                   setEditar(false);
-                  setVehiculo(vehicle);
+                  setVehiculo({ ...vehicle });
                 }}
                 className="fas fa-times text-indigo-800 hover:text-indigo-500"
                 title="Cancel"
@@ -254,7 +285,11 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
             <h1>{`¿Esta seguro de ${
               eliminar ? "eliminar" : "editar"
             } el registro?`}</h1>
-            <div className="w-full flex justify-evenly mt-4 mb-1" onKeyDown={handleKeyDown} tabIndex="0">
+            <div
+              className="w-full flex justify-evenly mt-4 mb-1"
+              onKeyDown={handleKeyDown}
+              tabIndex="0"
+            >
               <button
                 onClick={eliminar ? handleDelete : handleEdit}
                 ref={btnConfirmRef}

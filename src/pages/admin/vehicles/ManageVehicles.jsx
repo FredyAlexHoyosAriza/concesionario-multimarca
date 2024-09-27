@@ -102,9 +102,9 @@ const ManageVehicles = () => {
   };
 
   return (
-    <div className="flex-grow mt-4 mx-4 flex flex-col items-center">
-      <div className="flex flex-col w-full lg:flex-row mb-8 pb-8 border-b-4 border-green-950">
-        <h2 className="mx-auto lg:translate-x-20 text-3xl text-center font-bold text-slate-950">
+    <div className="flex-grow mt-4 sm:mx-4 flex flex-col items-center">
+      <div className="flex flex-col w-fit lg:w-full lg:flex-row mb-8 pb-8 border-b-4 border-green-950">
+        <h2 className="mx-auto lg:translate-x-20 text-xl sm:text-3xl text-center font-bold text-slate-950">
           Administración de vehículos
         </h2>
         <button
