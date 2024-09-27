@@ -31,7 +31,7 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
         placeholder="Buscar"
-        className="rounded-lg border border-gray-700 px-4 py-2"
+        className="rounded-lg block mx-auto border border-gray-700 px-4 py-2"
       />
       <legend className="text-center font-extrabold my-2">
         Todos los vehículos
@@ -171,17 +171,33 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
       {editar ? (
         <>
           <td>
-            <input
-              type="text"
-              name="marca"
+          <select
               value={vehiculo.marca}
               onChange={handleVehicle}
-            ></input>
+              name="marca"
+              className="w-full min-h-2 rounded-lg"
+              required
+            >
+              <option value="" disabled selected>
+                Seleccione una marca
+              </option>
+              <option>BMW</option>
+              <option>Chevrolet</option>
+              <option>Ferrari</option>
+              <option>Ford</option>
+              <option>lamborgini</option>
+              <option>Mazda</option>
+              <option>Mustang</option>
+              <option>Renault</option>
+              <option>Tesla</option>
+              <option>Toyota</option>
+            </select>
           </td>
           <td>
             <input
               type="text"
               name="gama"
+              className="w-full min-h-2 rounded-lg"
               value={vehiculo.gama}
               onChange={handleVehicle}
             ></input>
@@ -192,6 +208,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
               // max={2025}
               type="number"
               name="modelo"
+              className="w-full min-h-2 rounded-lg"
               value={vehiculo.modelo}
               onChange={(e) => {
                 setVehiculo((prevVehiculo) => ({
@@ -205,6 +222,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
             <input
               type="text"
               name="color"
+              className="w-full min-h-2 rounded-lg"
               value={vehiculo.color}
               onChange={handleVehicle}
             ></input>
