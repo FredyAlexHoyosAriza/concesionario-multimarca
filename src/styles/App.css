@@ -1,3 +1,8 @@
+html, body {
+  height: 100%;
+  overflow: hidden; /* Evita que la página entera tenga scroll */
+}
+
 input:hover, select:hover {
   box-shadow: 0 0 0 0.15em rgb(168, 163, 186);
 }
@@ -135,7 +140,6 @@ input:focus, select:focus {
 
 .tabla table {
   background-color: #cef4f9;
-  overflow: scroll;
 }
 
 .tabla td, .tabla th {

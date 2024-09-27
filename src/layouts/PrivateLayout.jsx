@@ -8,7 +8,7 @@ const PrivateLayout = () => {
   return (
     <div className='flex flex-col w-screen h-screen md:flex-row'>
       <SideBar />
-      <main className='flex-grow flex items-start justify-center w-screen h-auto p-4 bg-blue-400 overflow-auto'><Outlet /></main>
+      <main className='flex-grow flex items-start justify-center w-screen h-auto p-4 bg-blue-400 overflow-y-auto'><Outlet /></main>
     </div>
   )
 }
