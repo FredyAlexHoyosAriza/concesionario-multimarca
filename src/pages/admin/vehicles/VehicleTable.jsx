@@ -40,6 +40,7 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
         <table className="w-full min-w-96">
           <thead>
             <tr>
+              <th> Id </th>
               <th> Marca </th>
               <th> Gama </th>
               <th> Modelo </th>
@@ -178,6 +179,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
 
   return (
     <tr className={editar ? "editar" : eliminar && "eliminar"}>
+      <td>{vehicle._id.slice(19)}</td>
       {editar ? (
         <>
           <td>
@@ -240,7 +242,6 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
         </>
       ) : (
         <>
-          {/* <td>{vehicle._id.slice(19)}</td> para imprimir id limitando su tamaño de palabra */}
           <td>{vehicle.marca}</td>
           <td>{vehicle.gama}</td>
           <td>{vehicle.modelo}</td>
