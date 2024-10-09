@@ -6,62 +6,62 @@ import AddDBVehicle from "./AddDBVehicle";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 
-const vehicles = [
-  {
-    marca: "Toyota",
-    gama: "Sequoia",
-    modelo: 2025,
-    color: "azul",
-  },
-  {
-    marca: "Toyota",
-    gama: "Corolla",
-    modelo: 2023,
-    color: "griz",
-  },
-  {
-    marca: "Ford",
-    gama: "Fiesta",
-    modelo: 2017,
-    color: "blanco",
-  },
-  {
-    marca: "Renault",
-    gama: "Sandero",
-    modelo: 2024,
-    color: "rojo",
-  },
-  {
-    marca: "Renault",
-    gama: "4",
-    modelo: 1970,
-    color: "rojo",
-  },
-  {
-    marca: "Renault",
-    gama: "12",
-    modelo: 1980,
-    color: "rojo",
-  },
-  {
-    marca: "Mazda",
-    gama: "3",
-    modelo: 2010,
-    color: "rojo",
-  },
-  {
-    marca: "Chevrolet",
-    gama: "Caminos",
-    modelo: 2014,
-    color: "rojo",
-  },
-  {
-    marca: "Chevrolet",
-    gama: "Onix",
-    modelo: 2012,
-    color: "rojo",
-  },
-];
+// const vehicles = [
+//   {
+//     marca: "Toyota",
+//     gama: "Sequoia",
+//     modelo: 2025,
+//     color: "azul",
+//   },
+//   {
+//     marca: "Toyota",
+//     gama: "Corolla",
+//     modelo: 2023,
+//     color: "griz",
+//   },
+//   {
+//     marca: "Ford",
+//     gama: "Fiesta",
+//     modelo: 2017,
+//     color: "blanco",
+//   },
+//   {
+//     marca: "Renault",
+//     gama: "Sandero",
+//     modelo: 2024,
+//     color: "rojo",
+//   },
+//   {
+//     marca: "Renault",
+//     gama: "4",
+//     modelo: 1970,
+//     color: "rojo",
+//   },
+//   {
+//     marca: "Renault",
+//     gama: "12",
+//     modelo: 1980,
+//     color: "rojo",
+//   },
+//   {
+//     marca: "Mazda",
+//     gama: "3",
+//     modelo: 2010,
+//     color: "rojo",
+//   },
+//   {
+//     marca: "Chevrolet",
+//     gama: "Caminos",
+//     modelo: 2014,
+//     color: "rojo",
+//   },
+//   {
+//     marca: "Chevrolet",
+//     gama: "Onix",
+//     modelo: 2012,
+//     color: "rojo",
+//   },
+// ];
 
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
@@ -73,14 +73,14 @@ const ManageVehicles = () => {
     if (pathname === "/admin/vehicles/create") {
       setShowTable(false);
     }
-    // updateTable();
-    setVehiculos(vehicles);
+    updateTable();
+    // setVehiculos(vehicles);
   }, [getVehicles]);
 
   const updateTable = async () => {
     const options = {
       method: "GET",
-      url: "http://localhost:3000/vehicle/get-all/",
+      url: "http://localhost:5000/api/vehiculos/list",
     };
     await axios
       .request(options)
@@ -95,10 +95,27 @@ const ManageVehicles = () => {
   };
 
   const saveVehiculo = (nuevoVehiculo) => {
-    setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]); //CREATE
+    // setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]); //CREATE
     // setGetVehicles((prevGetVehicles) => !prevGetVehicles); //solo si exitoso
-    setShowTable(true);
-    toast.success("Registro guardado con exito!!!");
+    // setShowTable(true);
+    // toast.success("Registro guardado con exito!!!");
+
+    const options = {
+      method: 'POST',
+      url: 'http://localhost:5000/api/vehiculos/add',
+      headers: {'Content-Type': 'application/json'},
+      data: nuevoVehiculo
+    };
+    
+    axios.request(options).then(function (response) {
+      console.log(response.data);
+      updateTable();
+      setShowTable(true);
+      toast.success("Registro guardado con exito!!!");
+    }).catch(function (error) {
+      console.error(error);
+      toast.error(`Error al guardar registro: ${error.message}`);
+    });
   };
 
   return (

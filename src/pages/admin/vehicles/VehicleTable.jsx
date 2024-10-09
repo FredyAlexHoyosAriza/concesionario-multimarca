@@ -49,7 +49,7 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
           </thead>
           <tbody>
             {vehiculosBusqueda.map((vehiculo) => {
-              //({ marca, gama, modelo, color, id })
+              //({ _id, marca, gama, modelo, color, id })
               return (
                 <VehicleRow
                   key={nanoid()}
@@ -63,9 +63,12 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
       </div>
       <div className="flex flex-wrap justify-around sm:hidden">
         {vehiculosBusqueda.map(({ marca, gama, modelo, color }) => {
-          //({ marca, gama, modelo, color, id })
+          //({ _id, marca, gama, modelo, color }) // Cards para tamaños pequeños
           return (
-            <div key={nanoid()} className="bg-slate-500 text-white p-2 m-2 rounded-lg flex flex-col" >
+            <div
+              key={nanoid()}
+              className="bg-slate-500 text-white p-2 m-2 rounded-lg flex flex-col"
+            >
               <span>Marca: {marca} </span>
               <span>Gama: {gama} </span>
               <span>Modelo: {modelo} </span>
@@ -101,67 +104,74 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     }));
   };
 
-  // const handleEdit = async () => {
-  //   const options = {
-  //     method: "PATCH",
-  //     url: "http://localhost:3000/vehicle/edit/",
-  //     headers: { "content-type": "application/json" },
-  //     data: vehiculo,
-  //   };
-  //   await axios
-  //     .request(options)
-  //     .then(function (response) {
-  //       setGetVehicles(prevGetVehicles => !prevGetVehicles);
-  //       setEditar(false);
-  //       console.log(response.data);
-  //       toast.success("Registro actualizado con exito!!!");
-  //     })
-  //     .catch(function (error) {
-  //       console.error(error);
-  //       toast.error("El Registro no pudo ser actualizado");
-  //     });
-  // };
-
-  const handleEdit = () => {
+  const handleEdit = async () => {
     setOpenDialogue(false);
     const { modelo } = vehiculo;
     if (modelo < 1992 || modelo > 2025) {
       toast.warn("El modelo debe estar entre 1992 y 2025");
     } else {
-      console.log(vehiculo);
-      setEditar(false);
+      const options = {
+        method: "PUT",
+        url: "http://localhost:5000/api/vehiculos/update",
+        headers: { "content-type": "application/json" },
+        data: vehiculo,
+      };
+      await axios
+        .request(options)
+        .then(function (response) {
+          setGetVehicles((prevGetVehicles) => !prevGetVehicles);
+          setEditar(false);
+          console.log(response.data);
+          toast.success("Registro actualizado con exito!!!");
+        })
+        .catch(function (error) {
+          console.error(error);
+          toast.error("El Registro no pudo ser actualizado");
+        });
     }
-    //cada vez que cambia un registro se traen todos los registros desde DB y se renderiza la tabla
-    //aquí aún no actualiza desde BD por ello se debe resetear el estado vehículo
-    setVehiculo({ ...vehicle });
   };
 
-  // const handleDelete = async () => {
-  //   const options = {
-  //     method: "DELETE",
-  //     url: "http://localhost:3000/vehicle/delete/",
-  //     headers: { "content-type": "application/json" },
-  //     data: { _id: vehicle._id },
-  //   };
-  //   await axios
-  //     .request(options)
-  //     .then(function (response) {
-  //       setGetVehicles((prevGetVehicles) => !prevGetVehicles);
-  //       setEliminar(false);
-  //       console.log(response.data);
-  //       toast.success("Registro eliminado con exito!!!");
-  //     })
-  //     .catch(function (error) {
-  //       console.error(error);
-  //       toast.error("El Registro no pudo ser eliminado");
-  //     });
+  // const handleEdit = () => {
+  //   setOpenDialogue(false);
+  //   const { modelo } = vehiculo;
+  //   if (modelo < 1992 || modelo > 2025) {
+  //     toast.warn("El modelo debe estar entre 1992 y 2025");
+  //   } else {
+  //     console.log(vehiculo);
+  //     setEditar(false);
+  //   }
+  //   //cada vez que cambia un registro se traen todos los registros desde DB y se renderiza la tabla
+  //   //aquí aún no actualiza desde BD por ello se debe resetear el estado vehículo
+  //   setVehiculo({ ...vehicle });
   // };
 
   const handleDelete = async () => {
     setOpenDialogue(false);
-    console.log(vehiculo);
-    setEliminar(false);
+    const options = {
+      method: "DELETE",
+      url: "http://localhost:5000/api/vehiculos/delete",
+      headers: { "content-type": "application/json" },
+      data: { _id: vehicle._id },
+    };
+    await axios
+      .request(options)
+      .then(function (response) {
+        setGetVehicles((prevGetVehicles) => !prevGetVehicles);
+        setEliminar(false);
+        console.log(response.data);
+        toast.success("Registro eliminado con exito!!!");
+      })
+      .catch(function (error) {
+        console.error(error);
+        toast.error("El Registro no pudo ser eliminado");
+      });
   };
+
+  // const handleDelete = async () => {
+  //   setOpenDialogue(false);
+  //   console.log(vehiculo);
+  //   setEliminar(false);
+  // };
 
   /*En los inputs se usa defalultValue y no value, ya que el defaultValue se carga solo el inicio
   y luego permite la modificación del valor en el input, en tanto value no permite la modificación */
@@ -171,7 +181,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
       {editar ? (
         <>
           <td>
-          <select
+            <select
               value={vehiculo.marca}
               onChange={handleVehicle}
               name="marca"
@@ -230,6 +240,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
         </>
       ) : (
         <>
+          {/* <td>{vehicle._id.slice(19)}</td> para imprimir id limitando su tamaño de palabra */}
           <td>{vehicle.marca}</td>
           <td>{vehicle.gama}</td>
           <td>{vehicle.modelo}</td>
