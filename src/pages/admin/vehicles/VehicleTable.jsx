@@ -1,8 +1,8 @@
 import { Dialog, Tooltip } from "@mui/material";
-import axios from "axios";
 import { nanoid } from "nanoid";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { editVehicle, deleteVehicle } from "utils/api";
 
 const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
   const [busqueda, setBusqueda] = useState("");
@@ -85,12 +85,6 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
 const VehicleRow = ({ vehicle, setGetVehicles }) => {
   const [editar, setEditar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
-  // const [vehiculo, setVehiculo] = useState({
-  //   marca: vehicle.marca,
-  //   modelo: vehicle.modelo,
-  //   gama: vehicle.gama,
-  //   color: vehicle.color,
-  // });
   const [vehiculo, setVehiculo] = useState(() => {
     const { _id, ...vehicleNoId } = vehicle;
     return vehicleNoId;
@@ -120,24 +114,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     if (modelo < 1992 || modelo > 2025) {
       toast.warn("El modelo debe estar entre 1992 y 2025");
     } else {
-      const options = {
-        method: "PUT",
-        url: `http://localhost:5000/api/vehiculos/${vehicle._id}/`,
-        headers: { "content-type": "application/json" },
-        data: vehiculo,
-      };
-      await axios
-        .request(options)
-        .then(function (response) {
-          setGetVehicles((prevGetVehicles) => !prevGetVehicles);
-          setEditar(false);
-          console.log(response.data);
-          toast.success("Registro actualizado con exito!!!");
-        })
-        .catch(function (error) {
-          console.error(error);
-          toast.error("El Registro no pudo ser actualizado");
-        });
+      editVehicle(vehiculo, vehicle._id, setGetVehicles, setEditar);
     }
   };
 
@@ -157,23 +134,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
 
   const handleDelete = async () => {
     setOpenDialogue(false);
-    const options = {
-      method: "DELETE",
-      url: `http://localhost:5000/api/vehiculos/${vehicle._id}/`,
-      headers: { "content-type": "application/json" },
-    };
-    await axios
-      .request(options)
-      .then(function (response) {
-        setGetVehicles((prevGetVehicles) => !prevGetVehicles);
-        setEliminar(false);
-        console.log(response.data);
-        toast.success("Registro eliminado con exito!!!");
-      })
-      .catch(function (error) {
-        console.error(error);
-        toast.error("El Registro no pudo ser eliminado");
-      });
+    deleteVehicle(vehicle._id, setGetVehicles, setEliminar);
   };
 
   // const handleDelete = async () => {
@@ -181,9 +142,6 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   //   console.log(vehiculo);
   //   setEliminar(false);
   // };
-
-  /*En los inputs se usa defalultValue y no value, ya que el defaultValue se carga solo el inicio
-  y luego permite la modificación del valor en el input, en tanto value no permite la modificación */
 
   return (
     <tr className={editar ? "editar" : eliminar && "eliminar"}>

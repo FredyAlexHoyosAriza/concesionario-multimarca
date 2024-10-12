@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import VehicleTable from "./VehicleTable";
 import AddDBVehicle from "./AddDBVehicle";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { updateTable, saveVehicle } from "utils/api";
 
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
@@ -17,52 +17,12 @@ const ManageVehicles = () => {
     if (pathname === "/admin/vehicles/create") {
       setShowTable(false);
     }
-    updateTable();
+    updateTable(setVehiculos);
     // setVehiculos(vehicles);
   }, [getVehicles]);
 
-  const updateTable = async () => {
-    const options = {
-      method: "GET",
-      //Se usa slash (/) al final para que funcione en Safari
-      url: "http://localhost:5000/api/vehiculos/",
-    };
-    await axios
-      .request(options)
-      .then(function (response) {
-        setVehiculos(response.data);
-        toast.success("Tabla actualizada con exito!!!");
-      })
-      .catch(function (error) {
-        console.error(error);
-        toast.error("La tabla no pudo ser actualizada");
-      });
-  };
-
-  const saveVehiculo = (nuevoVehiculo) => {
-    // setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]); //CREATE
-    // setGetVehicles((prevGetVehicles) => !prevGetVehicles); //solo si exitoso
-    // setShowTable(true);
-    // toast.success("Registro guardado con exito!!!");
-
-    const options = {
-      method: 'POST',
-      url: 'http://localhost:5000/api/vehiculos/',
-      headers: {'Content-Type': 'application/json'},
-      data: nuevoVehiculo
-    };
-    
-    axios.request(options).then(function (response) {
-      console.log(response.data);
-      updateTable();
-      navigate('/admin/vehicles');
-      setShowTable(true);
-      toast.success("Registro guardado con exito!!!");
-    }).catch(function (error) {
-      console.error(error);
-      toast.error(`Error al guardar registro: ${error.message}`);
-    });
-  };
+  const saveVehiculo = (nuevoVehiculo) =>
+    saveVehicle(nuevoVehiculo, setVehiculos, setShowTable, navigate);
 
   return (
     <div className="flex-grow mt-4 sm:mx-4 flex flex-col items-center">
