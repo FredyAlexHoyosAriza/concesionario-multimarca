@@ -3,71 +3,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import VehicleTable from "./VehicleTable";
 import AddDBVehicle from "./AddDBVehicle";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
-// const vehicles = [
-//   {
-//     marca: "Toyota",
-//     gama: "Sequoia",
-//     modelo: 2025,
-//     color: "azul",
-//   },
-//   {
-//     marca: "Toyota",
-//     gama: "Corolla",
-//     modelo: 2023,
-//     color: "griz",
-//   },
-//   {
-//     marca: "Ford",
-//     gama: "Fiesta",
-//     modelo: 2017,
-//     color: "blanco",
-//   },
-//   {
-//     marca: "Renault",
-//     gama: "Sandero",
-//     modelo: 2024,
-//     color: "rojo",
-//   },
-//   {
-//     marca: "Renault",
-//     gama: "4",
-//     modelo: 1970,
-//     color: "rojo",
-//   },
-//   {
-//     marca: "Renault",
-//     gama: "12",
-//     modelo: 1980,
-//     color: "rojo",
-//   },
-//   {
-//     marca: "Mazda",
-//     gama: "3",
-//     modelo: 2010,
-//     color: "rojo",
-//   },
-//   {
-//     marca: "Chevrolet",
-//     gama: "Caminos",
-//     modelo: 2014,
-//     color: "rojo",
-//   },
-//   {
-//     marca: "Chevrolet",
-//     gama: "Onix",
-//     modelo: 2012,
-//     color: "rojo",
-//   },
-// ];
 
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
   const [vehiculos, setVehiculos] = useState([]);
   const [getVehicles, setGetVehicles] = useState(false);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (pathname === "/admin/vehicles/create") {
@@ -80,7 +24,8 @@ const ManageVehicles = () => {
   const updateTable = async () => {
     const options = {
       method: "GET",
-      url: "http://localhost:5000/api/vehiculos/list",
+      //Se usa slash (/) al final para que funcione en Safari
+      url: "http://localhost:5000/api/vehiculos/",
     };
     await axios
       .request(options)
@@ -102,7 +47,7 @@ const ManageVehicles = () => {
 
     const options = {
       method: 'POST',
-      url: 'http://localhost:5000/api/vehiculos/add',
+      url: 'http://localhost:5000/api/vehiculos/',
       headers: {'Content-Type': 'application/json'},
       data: nuevoVehiculo
     };
@@ -110,6 +55,7 @@ const ManageVehicles = () => {
     axios.request(options).then(function (response) {
       console.log(response.data);
       updateTable();
+      navigate('/admin/vehicles');
       setShowTable(true);
       toast.success("Registro guardado con exito!!!");
     }).catch(function (error) {

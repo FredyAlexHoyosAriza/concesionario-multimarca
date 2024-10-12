@@ -85,7 +85,16 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
 const VehicleRow = ({ vehicle, setGetVehicles }) => {
   const [editar, setEditar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
-  const [vehiculo, setVehiculo] = useState({ ...vehicle });
+  // const [vehiculo, setVehiculo] = useState({
+  //   marca: vehicle.marca,
+  //   modelo: vehicle.modelo,
+  //   gama: vehicle.gama,
+  //   color: vehicle.color,
+  // });
+  const [vehiculo, setVehiculo] = useState(() => {
+    const { _id, ...vehicleNoId } = vehicle;
+    return vehicleNoId;
+  } );
   const [opendDialogue, setOpenDialogue] = useState(false);
   const btnConfirmRef = useRef(null);
   const btnCancelRef = useRef(null);
@@ -113,7 +122,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     } else {
       const options = {
         method: "PUT",
-        url: "http://localhost:5000/api/vehiculos/update",
+        url: `http://localhost:5000/api/vehiculos/${vehicle._id}/`,
         headers: { "content-type": "application/json" },
         data: vehiculo,
       };
@@ -150,9 +159,8 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     setOpenDialogue(false);
     const options = {
       method: "DELETE",
-      url: "http://localhost:5000/api/vehiculos/delete",
+      url: `http://localhost:5000/api/vehiculos/${vehicle._id}/`,
       headers: { "content-type": "application/json" },
-      data: { _id: vehicle._id },
     };
     await axios
       .request(options)
