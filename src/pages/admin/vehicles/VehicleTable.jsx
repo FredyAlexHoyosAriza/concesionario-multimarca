@@ -2,7 +2,7 @@ import { Dialog, Tooltip } from "@mui/material";
 import { nanoid } from "nanoid";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { editVehicle, deleteVehicle } from "utils/api";
+import { editRec, deleteRec } from "utils/api";
 
 const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
   const [busqueda, setBusqueda] = useState("");
@@ -83,12 +83,11 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
 };
 
 const VehicleRow = ({ vehicle, setGetVehicles }) => {
+  const { _id, ...vehicleNoId } = vehicle;
+  const urlPart = `vehiculos/${_id}`;
   const [editar, setEditar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
-  const [vehiculo, setVehiculo] = useState(() => {
-    const { _id, ...vehicleNoId } = vehicle;
-    return vehicleNoId;
-  } );
+  const [vehiculo, setVehiculo] = useState(vehicleNoId);
   const [opendDialogue, setOpenDialogue] = useState(false);
   const btnConfirmRef = useRef(null);
   const btnCancelRef = useRef(null);
@@ -108,13 +107,29 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     }));
   };
 
+  //-------------------------------------------------
+
+  // success callback
+  const updatedVehicle = (response) => {
+    setGetVehicles((prevGetVehicles) => !prevGetVehicles);
+    setEditar(false);
+    console.log(response.data);
+    toast.success("Registro actualizado con exito!!!");
+  };
+
+  // error callback
+  const notUpdatedVehicle = (error) => {
+    console.error(error);
+    toast.error("El Registro no pudo ser actualizado");
+  };
+
   const handleEdit = async () => {
     setOpenDialogue(false);
     const { modelo } = vehiculo;
     if (modelo < 1992 || modelo > 2025) {
       toast.warn("El modelo debe estar entre 1992 y 2025");
     } else {
-      editVehicle(vehiculo, vehicle._id, setGetVehicles, setEditar);
+      await editRec(vehiculo, urlPart, updatedVehicle, notUpdatedVehicle);
     }
   };
 
@@ -131,10 +146,26 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   //   //aquí aún no actualiza desde BD por ello se debe resetear el estado vehículo
   //   setVehiculo({ ...vehicle });
   // };
+  //---------------------------------------------------------------------
+
+  //---------------------------------------------------------------------
+  // success callback
+  const deletedVehicle = (response) => {
+    setGetVehicles((prevGetVehicles) => !prevGetVehicles);
+    setEliminar(false);
+    console.log(response.data);
+    toast.success("Registro eliminado con exito!!!");
+  };
+  
+  // error callback
+  const notDeletedVehicle = (error) => {
+    console.error(error);
+    toast.error("El Registro no pudo ser eliminado");
+  };
 
   const handleDelete = async () => {
     setOpenDialogue(false);
-    deleteVehicle(vehicle._id, setGetVehicles, setEliminar);
+    await deleteRec(urlPart, deletedVehicle, notDeletedVehicle);
   };
 
   // const handleDelete = async () => {
@@ -142,7 +173,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   //   console.log(vehiculo);
   //   setEliminar(false);
   // };
-
+  //---------------------------------------------------------------------
   return (
     <tr className={editar ? "editar" : eliminar && "eliminar"}>
       <td>{vehicle._id.slice(19)}</td>
@@ -155,8 +186,9 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
               name="marca"
               className="w-full min-h-2 rounded-lg"
               required
+              defaultValue={''}
             >
-              <option value="" disabled selected>
+              <option value={''} disabled>
                 Seleccione una marca
               </option>
               <option>BMW</option>
