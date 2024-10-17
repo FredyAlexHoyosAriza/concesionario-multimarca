@@ -170,18 +170,3 @@ input:focus, select:focus {
 .tabla .editar {
   border: 3px solid #22c55e /* #6366F1; */  
 }
-
-/* Estilos ShoppingCart*/
-
-.tabla .lastTr > *:not(:first-child):not(:last-child) {
-  border-left: 0;
-  border-right: 0;
-}
-
-.tabla .lastTr > :first-child {
-  border-right: 0;
-}
-
-.tabla .lastTr > :last-child {
-  border-left: 0;
-}
