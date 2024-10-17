@@ -1,6 +1,6 @@
 import React from "react";
 
-const AddDBVehicle = ({ infoNuevoVehiculo }) => {
+const AddDbVehicle = ({ infoNuevoVehiculo }) => {
   const handleSubmit = (e) => {
     // const nuevoVehiculo = {};
     // fd.forEach((value, key) => nuevoVehiculo[key] = value)
@@ -101,4 +101,4 @@ const AddDBVehicle = ({ infoNuevoVehiculo }) => {
   );
 };
 
-export default AddDBVehicle;
+export default AddDbVehicle;

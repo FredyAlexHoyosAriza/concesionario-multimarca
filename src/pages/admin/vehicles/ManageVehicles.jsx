@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import VehicleTable from "./VehicleTable";
-import AddDBVehicle from "./AddDBVehicle";
+import AddDbVehicle from "./AddDbVehicle";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { updateRecs, saveRec } from "utils/api";
 
@@ -79,7 +79,7 @@ const ManageVehicles = () => {
           setGetVehicles={setGetVehicles}
         />
       ) : (
-        <AddDBVehicle infoNuevoVehiculo={saveVehiculo} />
+        <AddDbVehicle infoNuevoVehiculo={saveVehiculo} />
       )}
       <ToastContainer
         /*🦄*/ position="bottom-right"
