@@ -1,4 +1,5 @@
 import { Dialog, Tooltip } from "@mui/material";
+import ScientificNotation from "components/ScientificNotation";
 import { nanoid } from "nanoid";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -40,17 +41,17 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
         <table className="w-full min-w-96">
           <thead>
             <tr>
-              <th> Id </th>
               <th> Marca </th>
               <th> Gama </th>
               <th> Modelo </th>
               <th> Color </th>
+              <th> Precio </th>
               <th className="w-1/12"> Acciones </th>
             </tr>
           </thead>
           <tbody>
             {vehiculosBusqueda.map((vehiculo) => {
-              //({ _id, marca, gama, modelo, color, id })
+              //({ _id, marca, gama, modelo, color, precio })
               return (
                 <VehicleRow
                   key={nanoid()}
@@ -64,7 +65,7 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
       </div>
       <div className="flex flex-wrap justify-around sm:hidden">
         {vehiculosBusqueda.map(({ marca, gama, modelo, color }) => {
-          //({ _id, marca, gama, modelo, color }) // Cards para tamaños pequeños
+          //({ _id, marca, gama, modelo, color, precio }) // Cards para tamaños pequeños
           return (
             <div
               key={nanoid()}
@@ -125,9 +126,11 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
 
   const handleEdit = async () => {
     setOpenDialogue(false);
-    const { modelo } = vehiculo;
+    const { modelo, precio } = vehiculo;
     if (modelo < 1992 || modelo > 2025) {
       toast.warn("El modelo debe estar entre 1992 y 2025");
+    }  else if (precio < 0) {    
+      toast.warn("El precio debe ser mayor a 0");
     } else {
       await editRec(vehiculo, urlPart, updatedVehicle, notUpdatedVehicle);
     }
@@ -175,8 +178,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   // };
   //---------------------------------------------------------------------
   return (
-    <tr className={editar ? "editar" : eliminar && "eliminar"}>
-      <td>{vehicle._id.slice(19)}</td>
+    <tr className={editar ? "editar" : (eliminar ? "eliminar" : "")}>
       {editar ? (
         <>
           <td>
@@ -214,8 +216,6 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
           </td>
           <td>
             <input
-              // min={1992}
-              // max={2025}
               type="number"
               name="modelo"
               className="w-full min-h-2 rounded-lg"
@@ -237,6 +237,21 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
               onChange={handleVehicle}
             ></input>
           </td>
+          <td>
+            <input
+              type="number"
+              step="0.01" min="0"
+              name="precio"
+              className="w-full min-h-2 rounded-lg"
+              value={vehiculo.precio}
+              onChange={(e) => {
+                setVehiculo((prevVehiculo) => ({
+                  ...prevVehiculo,
+                  precio: Number(e.target.value),
+                }));
+              }}
+            ></input>
+          </td>
         </>
       ) : (
         <>
@@ -244,6 +259,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
           <td>{vehicle.gama}</td>
           <td>{vehicle.modelo}</td>
           <td>{vehicle.color}</td>
+          <td><ScientificNotation number={vehicle.precio} /></td>
         </>
       )}
       <td>
