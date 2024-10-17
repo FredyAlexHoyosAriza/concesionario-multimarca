@@ -8,6 +8,7 @@ const AddDBVehicle = ({ infoNuevoVehiculo }) => {
     const formData = new FormData(e.currentTarget); // Obtén directamente el formulario
     const nuevoVehiculo = Object.fromEntries(formData.entries()); // Convierte el FormData a un objeto
     nuevoVehiculo.modelo = parseInt(nuevoVehiculo.modelo, 10);//segundo argumento base decimal (10)
+    nuevoVehiculo.precio = parseFloat(nuevoVehiculo.precio);
     infoNuevoVehiculo(nuevoVehiculo);
     // document.getElementById("vehicle").reset();// Resetear inputs del formulario
   };
@@ -74,6 +75,18 @@ const AddDBVehicle = ({ infoNuevoVehiculo }) => {
             type="text"
             className="w-full mt-1 min-h-2 rounded-lg"
             placeholder="Orange"
+            required
+          />
+        </label>
+        <label htmlFor="precio" className="block">
+          <span className="inline-block pl-2">Precio: </span>
+          <input
+            id="precio"
+            name="precio"
+            type="number"
+            step="0.01" min="0"
+            className="w-full mt-1 min-h-2 rounded-lg"
+            placeholder="Ingrese el precio $"
             required
           />
         </label>

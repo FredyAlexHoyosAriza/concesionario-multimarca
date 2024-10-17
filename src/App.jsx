@@ -9,12 +9,10 @@ import AuthLayout from "layouts/AuthLayout";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ManageClients from "pages/admin/ManageClients";
-import ManageSales from "pages/admin/ManageSales";
+import ManageSales from "pages/admin/sales/ManageSales";
 import ManageVehicles from "pages/admin/vehicles/ManageVehicles";
 import ManageProfile from "pages/admin/ManageProfile";
 import { ThemeProvider } from "context/ThemeProvider";
-import AddDBVehicle from "pages/admin/vehicles/AddDBVehicle";
-import VehicleTable from "pages/admin/vehicles/VehicleTable";
 
 export default function App() {
   return (
