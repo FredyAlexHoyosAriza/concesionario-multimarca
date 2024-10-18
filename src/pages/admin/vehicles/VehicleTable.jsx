@@ -188,7 +188,6 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
               name="marca"
               className="w-full min-h-2 rounded-lg"
               required
-              defaultValue={''}
             >
               <option value={''} disabled>
                 Seleccione una marca

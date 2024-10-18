@@ -16,12 +16,12 @@ const ShoppingCart = ({ vehicles, updateVehicle, deleteVehicle, total }) => {
         <table className="w-full min-w-96">
           <thead>
             <tr>
-              <th>Qty</th>
               <th>Marca</th>
               <th>Gama</th>
               <th>Modelo</th>
               <th>Color</th>
-              <th>Parcial</th>
+              <th>Cant.</th>
+              <th>Total</th>
               <th className="w-1/12"> Acciones </th>
             </tr>
           </thead>
@@ -65,12 +65,6 @@ const ShoppingCart = ({ vehicles, updateVehicle, deleteVehicle, total }) => {
   );
 };
 
-// const VehicleSale = () => {
-//   return (
-//     <div>ShoppingCart</div>
-//   )
-// }
-
 const SaleRow = ({ vehicle, updateVehicle, deleteVehicle }) => {
   const [editar, setEditar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
@@ -92,7 +86,7 @@ const SaleRow = ({ vehicle, updateVehicle, deleteVehicle }) => {
     setVehiculo((prevVehiculo) => ({
       ...prevVehiculo,
       cantidad: cantidad,
-      precio: cantidad*vehicle.precio/vehicle.cantidad,
+      precio: (cantidad * vehicle.precio) / vehicle.cantidad,
     }));
   };
 
@@ -101,10 +95,14 @@ const SaleRow = ({ vehicle, updateVehicle, deleteVehicle }) => {
   const handleEdit = () => {
     setOpenDialogue(false);
     const { cantidad } = vehiculo;
-    if (cantidad < 1) {
-      toast.warn("La cantidad debe ser mayor o igual a 1");
+    if (cantidad < 0) {
+      toast.warn("La cantidad no debe ser negativa");
     } else {
-      updateVehicle(vehiculo);
+      if (cantidad === 0) {
+        deleteVehicle(vehicle); //vehicle es una referencia dentro de vehicles
+      } else {
+        updateVehicle(vehiculo); // Podría usar vehicle
+      }
       setEditar(false);
     }
   };
@@ -116,12 +114,17 @@ const SaleRow = ({ vehicle, updateVehicle, deleteVehicle }) => {
   };
 
   return (
-    <tr className={editar ? "editar" : (eliminar ? "eliminar" : "")}>
+    <tr className={editar ? "editar" : eliminar ? "eliminar" : ""}>
+      <td>{vehicle.marca}</td>
+      <td>{vehicle.gama}</td>
+      <td>{vehicle.modelo}</td>
+      <td>{vehicle.color}</td>
       {editar ? (
         <>
           <td>
             <input
               type="number"
+              //min={1} Esta propiedad aquí no funciona; el input no está en un form con un botón submit
               name="cantidad"
               className="w-full min-h-2 rounded-lg"
               value={vehiculo.cantidad}
@@ -132,10 +135,6 @@ const SaleRow = ({ vehicle, updateVehicle, deleteVehicle }) => {
       ) : (
         <td>{vehicle.cantidad}</td>
       )}
-      <td>{vehicle.marca}</td>
-      <td>{vehicle.gama}</td>
-      <td>{vehicle.modelo}</td>
-      <td>{vehicle.color}</td>
       <td>
         <ScientificNotation number={vehicle.precio} />
       </td>

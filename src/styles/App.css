@@ -160,7 +160,7 @@ input:focus, select:focus {
 
 .tabla tr:hover {
   background-color: #ddd;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .tabla .eliminar {
@@ -169,6 +169,10 @@ input:focus, select:focus {
 
 .tabla .editar {
   border: 3px solid #22c55e /* #6366F1; */  
+}
+
+.fa-trash:hover, .fa-pencil-alt:hover, .fa-times:hover, .fa-check:hover {
+  cursor: pointer;
 }
 
 /* Estilos ShoppingCart*/

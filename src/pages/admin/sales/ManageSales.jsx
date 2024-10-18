@@ -40,7 +40,7 @@ const ManageSales = () => {
     setSelectedSeller(seller);
   };
 
-  const handleSubmit = (e) => {
+  const handleAddToSale = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const cantidad = parseInt(formData.get("cantidad"), 10);
@@ -82,9 +82,15 @@ const ManageSales = () => {
 
   const updateVehicle = (updatedVehicle) => {
     setVehicles((prevVehicles) =>
-      prevVehicles.map((vehicle) =>
-        vehicle._id === updatedVehicle._id ? updatedVehicle : vehicle
-      )
+      prevVehicles.map((vehicle) => {
+        if (vehicle._id === updatedVehicle._id) {
+          setTotal(
+            (prevTotal) => prevTotal - vehicle.precio + updatedVehicle.precio
+          );
+          return updatedVehicle;
+        }
+        return vehicle;
+      })
     );
   };
 
@@ -98,7 +104,7 @@ const ManageSales = () => {
   // succes callback
   const savedRec = async (response) => {
     console.log(response.data);
-    setSelectedSeller("");
+    setSelectedSeller({});
     setTotal(0);
     setVehicles([]);
     toast.success("Registro guardado con exito!!!");
@@ -111,8 +117,8 @@ const ManageSales = () => {
   };
 
   // Manejar el guardado de la venta
-  const handleSave = () => {
-    if (!selectedSeller) {
+  const handleSave = async () => {
+    if (!selectedSeller._id) {
       toast.warn("Por favor, selecciona un vendedor");
       return;
     }
@@ -123,7 +129,7 @@ const ManageSales = () => {
       total: total,
     };
 
-    // Aquí puedes enviar la venta a la base de datos
+    // Aquí se envía la venta a la base de datos
     saveRec(venta, "ventas", savedRec, notSavedRec);
   };
   //----------------------------------------------------------------
@@ -139,8 +145,8 @@ const ManageSales = () => {
           id="vendedor"
           name="vendedor"
           className="w-full mt-1 min-h-2 rounded-lg"
-          required
-          value={selectedSeller._id || ""}  // Ahora el value está controlado por el estado
+          // required
+          value={selectedSeller._id ?? ""} // Si selectedSeller._id es null o undefined value = ""
           onChange={handleSellerChange}
         >
           <option value={""} disabled>
@@ -155,12 +161,12 @@ const ManageSales = () => {
           })}
         </select>
       </label>
-      <form id="venta" onSubmit={handleSubmit} className="text-xl lg:w-full">
+      <form id="venta" onSubmit={handleAddToSale} className="text-xl lg:w-full">
         <legend className="font-bold mt-2 text-center text-2xl">
           Ingresar venta
         </legend>
-        <fieldset>
-          <label htmlFor="vehiculo" className="block mb-1">
+        <fieldset className="mb-1">
+          <label htmlFor="vehiculo" className="inline-block">
             <span className="inline-block pl-2">Vehiculo: </span>
             <select
               id="vehiculo"
@@ -172,17 +178,17 @@ const ManageSales = () => {
               <option value={""} disabled>
                 Seleccione un vehículo
               </option>
-              {dbVehicles.map(({ _id, marca, modelo, gama, color }) => {
+              {dbVehicles.map(({ _id, marca, modelo, gama, color, precio }) => {
                 return (
                   <option
                     key={nanoid()}
                     value={_id}
-                  >{`${marca} ${modelo} ${gama} ${color}`}</option>
+                  >{`${marca} ${modelo} ${gama} ${color} ${precio.toExponential(2)}`}</option>
                 );
               })}
             </select>
           </label>
-          <label htmlFor="cantidad" className="block">
+          <label htmlFor="cantidad" className="inline-block ml-1">
             <span className="inline-block pl-2">Cantidad: </span>
             <input
               id="cantidad"
