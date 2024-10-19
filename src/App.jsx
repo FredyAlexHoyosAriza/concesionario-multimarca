@@ -13,32 +13,41 @@ import ManageSales from "pages/admin/sales/ManageSales";
 import ManageVehicles from "pages/admin/vehicles/ManageVehicles";
 import ManageProfile from "pages/admin/ManageProfile";
 import { ThemeProvider } from "context/ThemeProvider";
+import { Auth0Provider } from "@auth0/auth0-react";
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <Routes>
-          <Route path="/admin" element={<PrivateLayout />}>
-            <Route path="vehicles" element={<ManageVehicles />}>
-              <Route path="create" element={null} />
+    <Auth0Provider
+      domain="dev-oqtggp7qfwvt0b01.us.auth0.com"
+      clientId="0t5PQUlCHw7bO5wbwWGpGzkoK4H8oXr4"
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+    >
+      <ThemeProvider>
+        <Router>
+          <Routes>
+            <Route path="/admin" element={<PrivateLayout />}>
+              <Route path="vehicles" element={<ManageVehicles />}>
+                <Route path="create" element={null} />
+              </Route>
+              <Route path="clients" element={<ManageClients />} />
+              <Route path="sales" element={<ManageSales />} />
+              <Route path="profile" element={<ManageProfile />} />
+              <Route index element={<AdminScreen />} />
             </Route>
-            <Route path="clients" element={<ManageClients />} />
-            <Route path="sales" element={<ManageSales />} />
-            <Route path="profile" element={<ManageProfile />} />
-            <Route index element={<AdminScreen />} />
-          </Route>
 
-          <Route path="/" element={<AuthLayout />}>
-            <Route path="register" element={<RegisterScreen />} />
-            <Route path="login" element={<LoginScreen />} />
-          </Route>
+            <Route path="/" element={<AuthLayout />}>
+              <Route path="register" element={<RegisterScreen />} />
+              <Route path="login" element={<LoginScreen />} />
+            </Route>
 
-          <Route path="/" element={<PublicLayout />}>
-            <Route index element={<Index />} />
-          </Route>
-        </Routes>
-      </Router>
-    </ThemeProvider>
+            <Route path="/" element={<PublicLayout />}>
+              <Route index element={<Index />} />
+            </Route>
+          </Routes>
+        </Router>
+      </ThemeProvider>
+    </Auth0Provider>
   );
 }
