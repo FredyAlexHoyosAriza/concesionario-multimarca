@@ -21,7 +21,7 @@ export default function App() {
       domain="dev-oqtggp7qfwvt0b01.us.auth0.com"
       clientId="0t5PQUlCHw7bO5wbwWGpGzkoK4H8oXr4"
       authorizationParams={{
-        redirect_uri: window.location.origin,
+        redirect_uri: `${window.location.origin}/admin`,
       }}
     >
       <ThemeProvider>

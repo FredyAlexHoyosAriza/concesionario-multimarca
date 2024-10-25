@@ -1,12 +1,15 @@
 import { useTheme } from "context/ThemeProvider";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import LogoConcesionario from "./LogoConcesionario";
 import useActiveRoute from "./hooks/useActiveRoute";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const SideBar = () => {
   const { pathname } = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { logout } = useAuth0();
+
   // const [seleccion, setSeleccion] = useState([true, false, false, false, false]);
   // onClick={() => setSeleccion([true, false, false, false, false])}
   return (
@@ -27,6 +30,16 @@ const SideBar = () => {
           className={`menu__button ${
             theme ? "menu__button--light" : "menu__button--dark"
           }`}
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
+        >
+          Log Out
+        </button>
+        <button
+          className={`menu__button ${
+            theme ? "menu__button--light" : "menu__button--dark"
+          }`}
           type="button"
           onClick={toggleTheme}
         >
@@ -41,10 +54,7 @@ const Ruta = ({ ruta, icono }) => {
   const isActive = useActiveRoute(ruta);
   //${`/admin/${ruta}` === pathname && 'current-path' }
   return (
-    <Link
-      to={`/admin/${ruta}`}
-      className={`${isActive && "current-path"}`}
-    >
+    <Link to={`/admin/${ruta}`} className={`${isActive && "current-path"}`}>
       <i className={`fas fa-${icono} mr-2`} />
       {`Manage ${ruta}`}
     </Link>

@@ -1,8 +1,9 @@
+import Profile from 'components/Profile'
 import React from 'react'
 
 const ManageProfile = () => {
   return (
-    <div>Manage Profile</div>
+    <div><Profile/></div>
   )
 }
 
