@@ -22,6 +22,8 @@ export default function App() {
       clientId="0t5PQUlCHw7bO5wbwWGpGzkoK4H8oXr4"
       authorizationParams={{
         redirect_uri: `${window.location.origin}/admin`,
+        audience: 'http://api-concesionario/',//el mismo del backend; id de api de auth0
+        // scope: "read:current_user update:current_user_metadata",
       }}
     >
       <ThemeProvider>
