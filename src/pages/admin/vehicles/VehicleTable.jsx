@@ -1,4 +1,4 @@
-import { Dialog, Tooltip } from "@mui/material";
+import { Dialog } from "@mui/material";//, Tooltip
 import ScientificNotation from "components/ScientificNotation";
 import { nanoid } from "nanoid";
 import React, { useEffect, useRef, useState } from "react";

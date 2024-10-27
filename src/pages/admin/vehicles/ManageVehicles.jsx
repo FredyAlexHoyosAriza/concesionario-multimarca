@@ -5,12 +5,14 @@ import VehicleTable from "./VehicleTable";
 import AddDbVehicle from "./AddDbVehicle";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { updateRecs, saveRec } from "utils/api";
+import Loading from "components/Loading";
 
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
   const [vehiculos, setVehiculos] = useState([]);
   const [getVehicles, setGetVehicles] = useState(false);
   const { pathname } = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const urlPart = "vehiculos";
 
@@ -30,16 +32,20 @@ const ManageVehicles = () => {
     if (pathname === "/admin/vehicles/create") {
       setShowTable(false);
     }
-    //updateRecs es asincrona pero es la ultima linea en useEffect
-    (async () => updateRecs(urlPart, updatedRecs, notUpdatedRecs))();
+    (async () => {
+      setIsLoading(true);
+      await updateRecs(urlPart, updatedRecs, notUpdatedRecs);
+      setIsLoading(false);
+    })();
+
   }, [getVehicles, pathname]);
 
   // succes callback
   const savedVehicle = async (response) => {
     console.log(response.data);
-    await updateRecs(urlPart, updatedRecs, notUpdatedRecs); //mejor esta alternativa
+    // await updateRecs(urlPart, updatedRecs, notUpdatedRecs); //mejor esta alternativak
     navigate("/admin/vehicles");
-    // setGetVehicles((prevGetVehicles) => !prevGetVehicles); //alternativa
+    setGetVehicles((prevGetVehicles) => !prevGetVehicles); //alternativa
     setShowTable(true);
     toast.success("Registro guardado con exito!!!");
   };
@@ -74,10 +80,14 @@ const ManageVehicles = () => {
         </button>
       </div>
       {showTable ? (
-        <VehicleTable
-          listaVehiculos={vehiculos}
-          setGetVehicles={setGetVehicles}
-        />
+        isLoading ? (
+          <Loading />
+        ) : (
+          <VehicleTable
+            listaVehiculos={vehiculos}
+            setGetVehicles={setGetVehicles}
+          />
+        )
       ) : (
         <AddDbVehicle infoNuevoVehiculo={saveVehiculo} />
       )}

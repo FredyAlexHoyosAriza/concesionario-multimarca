@@ -8,7 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 const SideBar = () => {
   const { pathname } = useLocation();
   const { theme, toggleTheme } = useTheme();
-  const { logout } = useAuth0();
+  const { user, logout } = useAuth0();
 
   // const [seleccion, setSeleccion] = useState([true, false, false, false, false]);
   // onClick={() => setSeleccion([true, false, false, false, false])}
@@ -22,7 +22,7 @@ const SideBar = () => {
         >
           <LogoConcesionario />
         </Link>
-        <Ruta ruta="profile" icono="user" />
+        <Ruta ruta="profile" icono="user" usuario={user} />
         <Ruta ruta="clients" icono="users" />
         <Ruta ruta="vehicles" icono="car" />
         <Ruta ruta="sales" icono="cash-register" />
@@ -30,9 +30,10 @@ const SideBar = () => {
           className={`menu__button ${
             theme ? "menu__button--light" : "menu__button--dark"
           }`}
-          onClick={() =>
-            logout({ logoutParams: { returnTo: window.location.origin } })
-          }
+          onClick={() => {
+            logout({ logoutParams: { returnTo: window.location.origin } });
+            localStorage.setItem("token", "");
+          }}
         >
           Log Out
         </button>
@@ -50,13 +51,26 @@ const SideBar = () => {
   );
 };
 
-const Ruta = ({ ruta, icono }) => {
+const Ruta = ({ ruta, icono, usuario }) => {
   const isActive = useActiveRoute(ruta);
   //${`/admin/${ruta}` === pathname && 'current-path' }
   return (
     <Link to={`/admin/${ruta}`} className={`${isActive && "current-path"}`}>
-      <i className={`fas fa-${icono} mr-2`} />
-      {`Manage ${ruta}`}
+      {usuario ? (
+        <>
+          <img
+            src={usuario.picture}
+            alt="Usuario"
+            className="w-5 h-5 rounded-full inline-block mr-1"
+          />
+          {usuario.name}
+        </>
+      ) : (
+        <>
+          <i className={`fas fa-${icono} mr-2`} />
+          {`Manage ${ruta}`}
+        </>
+      )}
     </Link>
   );
 };

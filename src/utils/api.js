@@ -1,54 +1,70 @@
 import axios from "axios";
 
-//Se trae el token guardado previamente en local storage desde PrivateRoute cuando el user se autentica
-const getToken = () => {
-  return `Bearer ${localStorage.getItem("token")}`;
-};
+//Este-es-un-interceptor-de-axios-funciona-como-una-especie-de-middleware-o-factor-común;-evita-redundancia
+const apiClient = axios.create({
+  baseURL: "http://localhost:5000/api/",
+});
+
+apiClient.interceptors.request.use(
+  async (config) => {
+    let token = localStorage.getItem('token'); // Se obtiene el token guardado en local storage
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+//---Hasta aquí va el interceptor de axios apiClient-------------------------------------------------
 
 export const updateRecs = async (urlPart, successCallback, errorCallback) => {
-  const options = {
-    method: "GET",
-    //Se usa slash (/) al final para que funcione en Safari
-    url: `http://localhost:5000/api/${urlPart}/`,
-    headers: { Authorization: getToken() },
-  };
-  await axios.request(options).then(successCallback).catch(errorCallback);
+  //Se usa slash (/) al final para que funcione en Safari
+  try {
+    const response = await apiClient.get(`${urlPart}/`);
+    successCallback(response);
+  } catch (error) {
+    errorCallback(error);
+  }
 };
 
-export const saveRec = (newReg, urlPart, successCallback, errorCallback) => {
-  // setVehiculos((prevVehiculos) => [...prevVehiculos, nuevoVehiculo]); //CREATE
-  // setGetVehicles((prevGetVehicles) => !prevGetVehicles); //solo si exitoso
-  // setShowTable(true);
-  // toast.success("Registro guardado con exito!!!");
-  // const options = {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   ...optionsPart,
-  // }
-  const options = {
-    method: "POST",
-    url: `http://localhost:5000/api/${urlPart}/`,
-    headers: { "Content-Type": "application/json", Authorization: getToken() },
-    data: newReg,
-  };
-  axios.request(options).then(successCallback).catch(errorCallback);
+export const saveRec = async (newReg, urlPart, successCallback, errorCallback) => {
+  try {
+    const response = await apiClient.post(`${urlPart}/`, newReg, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    successCallback(response);
+  } catch (error) {
+    errorCallback(error);
+  }
 };
 
 export const editRec = async (reg, urlPart, successCallback, errorCallback) => {
-  const options = {
-    method: "PUT",
-    url: `http://localhost:5000/api/${urlPart}/`,
-    headers: { "content-type": "application/json", Authorization: getToken() },
-    data: reg,
-  };
-  await axios.request(options).then(successCallback).catch(errorCallback);
+  try {
+    const response = await apiClient.put(`${urlPart}/`, reg, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    successCallback(response);
+  } catch (error) {
+    errorCallback(error);
+  }
 };
 
 export const deleteRec = async (urlPart, successCallback, errorCallback) => {
-  const options = {
-    method: "DELETE",
-    url: `http://localhost:5000/api/${urlPart}/`,
-    headers: { "content-type": "application/json", Authorization: getToken() },
-  };
-  await axios.request(options).then(successCallback).catch(errorCallback);
+  try {
+    const response = await apiClient.delete(`${urlPart}/`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    successCallback(response);
+  } catch (error) {
+    errorCallback(error);
+  }
 };
