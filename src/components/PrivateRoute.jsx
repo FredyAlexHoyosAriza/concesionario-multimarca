@@ -11,19 +11,21 @@ const PrivateRoute = ({ children }) => {
   const getToken = useToken();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) navigate('/');
+    if (!isLoading && !isAuthenticated) navigate("/");
 
     // Cada vez que cambie isLoading o isAuthenticated y este último sea true se solicita un nuevo token
     if (isAuthenticated) (async () => await getToken())();
-  
-  }, [isLoading, isAuthenticated, navigate, getToken])
-  
-  
+  }, [isLoading, isAuthenticated, navigate, getToken]);
+
   if (isLoading) {
-    return <div className="bg-slate-900 w-screen h-screen grid place-items-center"><Loading /></div>;
+    return (
+      <div className="bg-slate-900 w-screen h-screen grid place-items-center">
+        <Loading />
+      </div>
+    );
   }
 
-  return  isAuthenticated && children
+  return isAuthenticated && children;
 };
 
 export default PrivateRoute;

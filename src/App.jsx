@@ -14,6 +14,7 @@ import ManageVehicles from "pages/admin/vehicles/ManageVehicles";
 import ManageProfile from "pages/admin/ManageProfile";
 import { ThemeProvider } from "context/ThemeProvider";
 import { Auth0Provider } from "@auth0/auth0-react";
+import ManageUsers from "pages/admin/ManageUsers";
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
               <Route path="clients" element={<ManageClients />} />
               <Route path="sales" element={<ManageSales />} />
               <Route path="profile" element={<ManageProfile />} />
+              <Route path="users" element={<ManageUsers />} />
               <Route index element={<AdminScreen />} />
             </Route>
 

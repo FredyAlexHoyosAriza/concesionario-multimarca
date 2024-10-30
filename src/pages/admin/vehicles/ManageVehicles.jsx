@@ -81,7 +81,7 @@ const ManageVehicles = () => {
       </div>
       {showTable ? (
         isLoading ? (
-          <Loading />
+          <div className="w-full h-full grid place-items-center"><Loading /></div>
         ) : (
           <VehicleTable
             listaVehiculos={vehiculos}

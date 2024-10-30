@@ -23,7 +23,8 @@ const SideBar = () => {
           <LogoConcesionario />
         </Link>
         <Ruta ruta="profile" icono="user" usuario={user} />
-        <Ruta ruta="clients" icono="users" />
+        <Ruta ruta="clients" icono="mug-hot" />
+        <Ruta ruta="users" icono="users" />
         <Ruta ruta="vehicles" icono="car" />
         <Ruta ruta="sales" icono="cash-register" />
         <button
