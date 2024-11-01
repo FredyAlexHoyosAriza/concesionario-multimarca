@@ -64,7 +64,7 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
         </table>
       </div>
       <div className="flex flex-wrap justify-around sm:hidden">
-        {vehiculosBusqueda.map(({ marca, gama, modelo, color }) => {
+        {vehiculosBusqueda.map(({ marca, gama, modelo, color, precio }) => {
           //({ _id, marca, gama, modelo, color, precio }) // Cards para tamaños pequeños
           return (
             <div
@@ -75,6 +75,7 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
               <span>Gama: {gama} </span>
               <span>Modelo: {modelo} </span>
               <span>Color: {color} </span>
+              <span>Precio: {precio} </span>
             </div>
           );
         })}

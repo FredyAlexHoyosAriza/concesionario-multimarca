@@ -68,3 +68,17 @@ export const deleteRec = async (urlPart, successCallback, errorCallback) => {
     errorCallback(error);
   }
 };
+
+export const patchRec = async (reg, urlPart, successCallback, errorCallback) => {
+  try {
+    const response = await apiClient.patch(`${urlPart}/`, reg, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    successCallback(response);
+  } catch (error) {
+    errorCallback(error);
+  }
+};
+

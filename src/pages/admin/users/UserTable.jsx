@@ -1,0 +1,308 @@
+import { Dialog } from "@mui/material"; //, Tooltip
+import { nanoid } from "nanoid";
+import React, { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import { editRec, deleteRec, patchRec } from "utils/api";
+
+const UserTable = ({ listaUsuarios, setGetUsers }) => {
+  const [busqueda, setBusqueda] = useState("");
+  const [usuariosBusqueda, setUsuariosBusqueda] = useState([...listaUsuarios]);
+
+  useEffect(() => {
+    console.log(busqueda);
+    if (busqueda !== "") {
+      setUsuariosBusqueda(
+        listaUsuarios.filter((usuario) => {
+          return JSON.stringify(usuario)
+            .toLowerCase()
+            .includes(busqueda.toLowerCase());
+        })
+      );
+    } else {
+      setUsuariosBusqueda(listaUsuarios);
+    }
+  }, [busqueda, listaUsuarios]);
+
+  return (
+    <div className="w-full text-xl text-gray-900 tabla">
+      <input
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        placeholder="Buscar"
+        className="rounded-lg block mx-auto border border-gray-700 px-4 py-2"
+      />
+      <legend className="text-center font-extrabold my-2">
+        Todas las cuentas de usuario
+      </legend>
+      <div className="hidden sm:block">
+        <table className="w-full min-w-96">
+          <thead>
+            <tr>
+              <th> Nombre </th>
+              <th> Correo </th>
+              <th> Rol </th>
+              <th> Estado </th>
+              <th className="w-1/12"> Acciones </th>
+            </tr>
+          </thead>
+          <tbody>
+            {usuariosBusqueda.map((usuario) => {
+              //({ ..., _id, name, email, role, created_at })
+              return (
+                <VehicleRow
+                  key={nanoid()}
+                  user={usuario}
+                  setGetUsers={setGetUsers}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex flex-wrap justify-around sm:hidden">
+        {usuariosBusqueda.map(({ name, email, role, blocked }) => {
+          //({ ..., _id, name, email, role, created_at }) // Cards para tamaños pequeños
+          return (
+            <div
+              key={nanoid()}
+              className="bg-slate-500 text-white p-2 m-2 rounded-lg flex flex-col"
+            >
+              <span>Nombre: {name} </span>
+              <span>Correo: {email} </span>
+              <span>Rol: {role} </span>
+              <span>Estado: {blocked ? 'Inactivo' : 'Activo'} </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const VehicleRow = ({ user, setGetUsers }) => {
+  const { _id, ...userNoId } = user;
+  const isDisabled = user.blocked;
+  const urlPart = `usuarios/${_id}`;
+  const [editar, setEditar] = useState(false);
+  const [eliminar, setEliminar] = useState(false);
+  const [usuario, setUsuario] = useState(userNoId);
+  const [opendDialogue, setOpenDialogue] = useState(false);
+  const btnConfirmRef = useRef(null);
+  const btnCancelRef = useRef(null);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowRight") {
+      btnCancelRef.current.focus(); // Enfocar el botón derecho
+    } else if (e.key === "ArrowLeft") {
+      btnConfirmRef.current.focus(); // Enfocar el botón izquierdo
+    }
+  };
+
+  const handleUser = (e) => {
+    setUsuario((prevUser) => ({
+      ...prevUser,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleEmail = (e) => {
+    setUsuario((prevUser) => ({
+      ...prevUser,
+      [e.target.name]: e.target.value,
+    }));
+  }
+
+  //-------------------------------------------------
+
+  // success callback
+  const updatedReg = (response) => {
+    setGetUsers((prevGetUsers) => !prevGetUsers);
+    setEditar(false);
+    console.log(response.data);
+    toast.success("Registro actualizado con exito!!!");
+    //Si se cambia name o email de current user solicitar nuevo token
+  };
+
+  // error callback
+  const notUpdatedReg = (error) => {
+    console.error(error);
+    toast.error("El Registro no pudo ser actualizado");
+  };
+
+  const handleEdit = async () => {
+    /*Solo se editan usuarios con menos privilegios; admin puede editar seller y user*/
+    //No se permite editar rol del usuario actual ni la fecha de creación de nadie,
+    //solo name, email y role; email debe tener formato de email, autho debería verificar
+    setOpenDialogue(false);
+    // toast.warn("El precio debe ser mayor a 0");
+    await editRec(usuario, urlPart, updatedReg, notUpdatedReg);
+  };
+  //---------------------------------------------------------------------
+
+  //---------------------------------------------------------------------
+  // success callback
+  const deletedReg = (response) => {
+    //Un usuario no se elimina se bloquea con blocked = true
+    /*Solo se bloquean usuarios con menos privilegios; admin puede bloquear seller y user*/
+    setGetUsers((prevGetUsers) => !prevGetUsers);
+    setEliminar(false);
+    console.log(response.data);
+    toast.success("Registro bloqueado con exito!!!");
+    //Puesto que un usuario no se bloquea a si mismo, no se requiere nuevo token
+  };
+
+  // error callback
+  const notDeletedReg = (error) => {
+    console.error(error);
+    toast.error("El Registro no pudo ser bloqueado");
+  };
+
+  const toggleStatus = async () => {
+    //No se permite bloquear cuenta de usuario actual
+    setOpenDialogue(false);
+    await patchRec({ blocked: !isDisabled }, urlPart, deletedReg, notDeletedReg);
+  };
+  //---------------------------------------------------------------------
+  return (
+    <tr className={editar ? "editar" : eliminar ? "eliminar" : ""}>
+      {editar ? (
+        <>
+          <td>
+            <input
+              type="text"
+              name="name"
+              className="w-full min-h-2 rounded-lg"
+              value={usuario.name}
+              onChange={handleUser}
+            ></input>
+          </td>
+          <td>
+            <input
+              type="email"
+              name="email"
+              className="w-full min-h-2 rounded-lg"
+              value={usuario.email}
+              onChange={handleEmail}
+            ></input>
+          </td>
+          <td>
+            <select
+              value={usuario.role}
+              onChange={handleUser}
+              name="role"
+              className="w-full min-h-2 rounded-lg"
+              required
+            >
+              <option value={""} disabled>
+                Seleccione un rol
+              </option>
+              <option value='admin'>Administrador</option>
+              <option value='seller'>Vendedor</option>
+              <option value='user'>Usuario</option>
+              <option value='client'>Cliente</option>
+            </select>
+          </td>
+          {/* <td>
+            <input
+              type="date"
+              name="created_at"
+              className="w-full min-h-2 rounded-lg"
+              value={usuario.created_at}
+              onChange={handleUser}
+            ></input>
+          </td> */}
+        </>
+      ) : (
+        <>
+          <td>{user.name}</td>
+          <td>{user.email}</td>
+          <td>{user.role}</td>
+        </>
+      )}
+      <td>{isDisabled ? 'Inactivo' : 'Activo'}</td>
+      <td>
+        <div className="flex justify-evenly">
+          {editar ? (
+            <>
+              <i
+                onClick={() => setOpenDialogue(true)}
+                className="fas fa-check text-indigo-800 hover:text-indigo-500"
+                title="Confirm-edit"
+              />
+              <i
+                onClick={() => {
+                  setEditar(false);
+                  setUsuario({ ...user });
+                }}
+                className="fas fa-times text-indigo-800 hover:text-indigo-500"
+                title="Cancel"
+              />
+            </>
+          ) : (
+            <>
+              {eliminar ? (
+                <>
+                  <i
+                    onClick={() => setOpenDialogue(true)}
+                    className="fas fa-check text-red-800 hover:text-red-500"
+                    title={isDisabled ? "Confirm-enable" : "Confirm-disable"}
+                  />
+                  <i
+                    onClick={() => setEliminar(false)}
+                    className="fas fa-times text-red-800 hover:text-red-500"
+                    title="Cancel"
+                  />
+                </>
+              ) : (
+                <>
+                  <i
+                    onClick={() => setEditar(true)}
+                    className="fas fa-pencil-alt text-indigo-800 hover:text-indigo-500"
+                    title="Edit"
+                  />
+                  <i
+                    onClick={() => setEliminar(true)}
+                    className={`fas fa-user-${isDisabled ? 'check' : 'slash'} text-red-800 hover:text-red-500`}
+                    title={isDisabled ? 'Enable' : 'Disable'}
+                  />
+                </>
+              )}
+            </>
+          )}
+        </div>
+        <Dialog open={opendDialogue}>
+          <div className="flex flex-col items-center p-4 font-bold">
+            <h1>{`¿Esta seguro de ${
+              eliminar ? `${isDisabled ? 'desbloquear' : 'bloquear'}` : "editar"
+            } el usuario?`}</h1>
+            <div
+              className="w-full flex justify-evenly mt-4 mb-1"
+              onKeyDown={handleKeyDown}
+              tabIndex="0"
+            >
+              <button
+                onClick={eliminar ? toggleStatus : handleEdit}
+                ref={btnConfirmRef}
+                autoFocus
+                className={`focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 rounded-md ${
+                  eliminar ? "bg-red-500" : "bg-indigo-500"
+                } py-1 px-2 text-white`}
+              >
+                Confirmar
+              </button>
+              <button
+                onClick={() => setOpenDialogue(false)}
+                ref={btnCancelRef}
+                className="focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 rounded-md bg-gray-500 p-1 px-2 text-white"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </Dialog>
+      </td>
+    </tr>
+  );
+};
+
+export default UserTable;
