@@ -8,14 +8,14 @@ const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading } = useAuth0();
   // En tanto el user no este autenticado isLoading es true
-  const getToken = useToken();
+  const { verifyAndGetToken } = useToken();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) navigate("/");
 
     // Cada vez que cambie isLoading o isAuthenticated y este último sea true se solicita un nuevo token
-    if (isAuthenticated) (async () => await getToken())();
-  }, [isLoading, isAuthenticated, navigate, getToken]);
+    if (isAuthenticated) (async () => await verifyAndGetToken())();
+  }, [isLoading, isAuthenticated, navigate, verifyAndGetToken]);
 
   if (isLoading) {
     return (

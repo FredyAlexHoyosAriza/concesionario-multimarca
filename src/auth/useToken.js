@@ -63,7 +63,7 @@ const useToken = () => {
     }
   }, [refreshToken]);
 
-  return verifyAndGetToken; // Devuelve directamente la función
+  return { verifyAndGetToken, refreshToken }; // Devuelve directamente la función
 };
 
 export default useToken;
