@@ -6,6 +6,8 @@ import AddDbVehicle from "./AddDbVehicle";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { updateRecs, saveRec } from "utils/api";
 import Loading from "components/Loading";
+import PrivateComponent from "components/PrivateComponent";
+import { useUser } from "context/UserProvider";
 
 const ManageVehicles = () => {
   const [showTable, setShowTable] = useState(true);
@@ -15,6 +17,7 @@ const ManageVehicles = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const urlPart = "vehiculos";
+  const { userData } = useUser();
 
   // success callback
   const updatedRecs = (response) => {
@@ -37,7 +40,6 @@ const ManageVehicles = () => {
       await updateRecs(urlPart, updatedRecs, notUpdatedRecs);
       setIsLoading(false);
     })();
-
   }, [getVehicles, pathname]);
 
   // succes callback
@@ -63,25 +65,29 @@ const ManageVehicles = () => {
   return (
     <div className="flex-grow mt-4 sm:mx-4 flex flex-col items-center">
       <div className="flex flex-col w-fit lg:w-full lg:flex-row mb-8 pb-8 border-b-4 border-green-950">
-        <h2 className="mx-auto lg:translate-x-20 text-xl sm:text-3xl text-center font-bold text-slate-950">
+        <h2 className={`mx-auto ${userData.role==='admin'&&'lg:translate-x-20'} text-xl sm:text-3xl text-center font-bold text-slate-950`}>
           Administración de vehículos
         </h2>
-        <button
-          onClick={() => setShowTable((prevShowTable) => !prevShowTable)}
-          className={`rounded border-2 p-2 text-xl text-white ${
-            showTable ? "bg-indigo-700" : "bg-green-700"
-          }`}
-        >
-          {showTable ? (
-            <Link to={"create"}>Crear vehículo</Link>
-          ) : (
-            <Link to={""}>Tabla vehículos</Link>
-          )}
-        </button>
+        <PrivateComponent>
+          <button
+            onClick={() => setShowTable((prevShowTable) => !prevShowTable)}
+            className={`rounded border-2 p-2 text-xl text-white ${
+              showTable ? "bg-indigo-700" : "bg-green-700"
+            }`}
+          >
+            {showTable ? (
+              <Link to={"create"}>Crear vehículo</Link>
+            ) : (
+              <Link to={""}>Tabla vehículos</Link>
+            )}
+          </button>
+        </PrivateComponent>
       </div>
       {showTable ? (
         isLoading ? (
-          <div className="w-full h-full grid place-items-center"><Loading /></div>
+          <div className="w-full h-full grid place-items-center">
+            <Loading />
+          </div>
         ) : (
           <VehicleTable
             listaVehiculos={vehiculos}
@@ -89,7 +95,9 @@ const ManageVehicles = () => {
           />
         )
       ) : (
-        <AddDbVehicle infoNuevoVehiculo={saveVehiculo} />
+        <PrivateComponent>
+          <AddDbVehicle infoNuevoVehiculo={saveVehiculo} />
+        </PrivateComponent>
       )}
       <ToastContainer
         /*🦄*/ position="bottom-right"

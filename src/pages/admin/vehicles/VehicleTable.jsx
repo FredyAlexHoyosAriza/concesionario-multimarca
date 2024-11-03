@@ -1,4 +1,5 @@
-import { Dialog } from "@mui/material";//, Tooltip
+import { Dialog } from "@mui/material"; //, Tooltip
+import PrivateComponent from "components/PrivateComponent";
 import ScientificNotation from "components/ScientificNotation";
 import { nanoid } from "nanoid";
 import React, { useEffect, useRef, useState } from "react";
@@ -46,7 +47,9 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
               <th> Modelo </th>
               <th> Color </th>
               <th> Precio </th>
-              <th className="w-1/12"> Acciones </th>
+              <PrivateComponent>
+                <th className="w-1/12"> Acciones </th>
+              </PrivateComponent>
             </tr>
           </thead>
           <tbody>
@@ -130,7 +133,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     const { modelo, precio } = vehiculo;
     if (modelo < 1992 || modelo > 2025) {
       toast.warn("El modelo debe estar entre 1992 y 2025");
-    }  else if (precio < 0) {    
+    } else if (precio < 0) {
       toast.warn("El precio debe ser mayor a 0");
     } else {
       await editRec(vehiculo, urlPart, updatedVehicle, notUpdatedVehicle);
@@ -160,7 +163,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
     console.log(response.data);
     toast.success("Registro eliminado con exito!!!");
   };
-  
+
   // error callback
   const notDeletedVehicle = (error) => {
     console.error(error);
@@ -179,7 +182,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
   // };
   //---------------------------------------------------------------------
   return (
-    <tr className={editar ? "editar" : (eliminar ? "eliminar" : "")}>
+    <tr className={editar ? "editar" : eliminar ? "eliminar" : ""}>
       {editar ? (
         <>
           <td>
@@ -190,7 +193,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
               className="w-full min-h-2 rounded-lg"
               required
             >
-              <option value={''} disabled>
+              <option value={""} disabled>
                 Seleccione una marca
               </option>
               <option>BMW</option>
@@ -240,7 +243,8 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
           <td>
             <input
               type="number"
-              step="0.01" min="0"
+              step="0.01"
+              min="0"
               name="precio"
               className="w-full min-h-2 rounded-lg"
               value={vehiculo.precio}
@@ -259,102 +263,106 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
           <td>{vehicle.gama}</td>
           <td>{vehicle.modelo}</td>
           <td>{vehicle.color}</td>
-          <td><ScientificNotation number={vehicle.precio} /></td>
+          <td>
+            <ScientificNotation number={vehicle.precio} />
+          </td>
         </>
       )}
-      <td>
-        <div className="flex justify-evenly">
-          {editar ? (
-            <>
-              {/* <Tooltip title='Confirm-edit' arrow> */}
-              <i
-                onClick={() => setOpenDialogue(true)}
-                className="fas fa-check text-indigo-800 hover:text-indigo-500"
-                title="Confirm-edit"
-              />
-              {/* </Tooltip>
+      <PrivateComponent>
+        <td>
+          <div className="flex justify-evenly">
+            {editar ? (
+              <>
+                {/* <Tooltip title='Confirm-edit' arrow> */}
+                <i
+                  onClick={() => setOpenDialogue(true)}
+                  className="fas fa-check text-indigo-800 hover:text-indigo-500"
+                  title="Confirm-edit"
+                />
+                {/* </Tooltip>
               <Tooltip title='Cancel' arrow> */}
-              <i
-                onClick={() => {
-                  setEditar(false);
-                  setVehiculo({ ...vehicle });
-                }}
-                className="fas fa-times text-indigo-800 hover:text-indigo-500"
-                title="Cancel"
-              />
-              {/* </Tooltip> */}
-            </>
-          ) : (
-            <>
-              {eliminar ? (
-                <>
-                  {/* <Tooltip title="Confirm-delete" arrow> */}
-                  <i
-                    onClick={() => setOpenDialogue(true)}
-                    className="fas fa-check text-red-800 hover:text-red-500"
-                    title="Confirm-delete"
-                  />
-                  {/* </Tooltip>
+                <i
+                  onClick={() => {
+                    setEditar(false);
+                    setVehiculo({ ...vehicle });
+                  }}
+                  className="fas fa-times text-indigo-800 hover:text-indigo-500"
+                  title="Cancel"
+                />
+                {/* </Tooltip> */}
+              </>
+            ) : (
+              <>
+                {eliminar ? (
+                  <>
+                    {/* <Tooltip title="Confirm-delete" arrow> */}
+                    <i
+                      onClick={() => setOpenDialogue(true)}
+                      className="fas fa-check text-red-800 hover:text-red-500"
+                      title="Confirm-delete"
+                    />
+                    {/* </Tooltip>
                   <Tooltip title="Cancel" arrow> */}
-                  <i
-                    onClick={() => setEliminar(false)}
-                    className="fas fa-times text-red-800 hover:text-red-500"
-                    title="Cancel"
-                  />
-                  {/* </Tooltip> */}
-                </>
-              ) : (
-                <>
-                  {/* <Tooltip title="Edit" arrow> */}
-                  <i
-                    onClick={() => setEditar(true)}
-                    className="fas fa-pencil-alt text-indigo-800 hover:text-indigo-500"
-                    title="Edit"
-                  />
-                  {/* </Tooltip>
+                    <i
+                      onClick={() => setEliminar(false)}
+                      className="fas fa-times text-red-800 hover:text-red-500"
+                      title="Cancel"
+                    />
+                    {/* </Tooltip> */}
+                  </>
+                ) : (
+                  <>
+                    {/* <Tooltip title="Edit" arrow> */}
+                    <i
+                      onClick={() => setEditar(true)}
+                      className="fas fa-pencil-alt text-indigo-800 hover:text-indigo-500"
+                      title="Edit"
+                    />
+                    {/* </Tooltip>
                   <Tooltip title="Delete" arrow> */}
-                  <i
-                    onClick={() => setEliminar(true)}
-                    className="fas fa-trash text-red-800 hover:text-red-500"
-                    title="Delete"
-                  />
-                  {/* </Tooltip> */}
-                </>
-              )}
-            </>
-          )}
-        </div>
-        <Dialog open={opendDialogue}>
-          <div className="flex flex-col items-center p-4 font-bold">
-            <h1>{`¿Esta seguro de ${
-              eliminar ? "eliminar" : "editar"
-            } el registro?`}</h1>
-            <div
-              className="w-full flex justify-evenly mt-4 mb-1"
-              onKeyDown={handleKeyDown}
-              tabIndex="0"
-            >
-              <button
-                onClick={eliminar ? handleDelete : handleEdit}
-                ref={btnConfirmRef}
-                autoFocus
-                className={`focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 rounded-md ${
-                  eliminar ? "bg-red-500" : "bg-indigo-500"
-                } py-1 px-2 text-white`}
-              >
-                Confirmar
-              </button>
-              <button
-                onClick={() => setOpenDialogue(false)}
-                ref={btnCancelRef}
-                className="focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 rounded-md bg-gray-500 p-1 px-2 text-white"
-              >
-                Cancelar
-              </button>
-            </div>
+                    <i
+                      onClick={() => setEliminar(true)}
+                      className="fas fa-trash text-red-800 hover:text-red-500"
+                      title="Delete"
+                    />
+                    {/* </Tooltip> */}
+                  </>
+                )}
+              </>
+            )}
           </div>
-        </Dialog>
-      </td>
+          <Dialog open={opendDialogue}>
+            <div className="flex flex-col items-center p-4 font-bold">
+              <h1>{`¿Esta seguro de ${
+                eliminar ? "eliminar" : "editar"
+              } el registro?`}</h1>
+              <div
+                className="w-full flex justify-evenly mt-4 mb-1"
+                onKeyDown={handleKeyDown}
+                tabIndex="0"
+              >
+                <button
+                  onClick={eliminar ? handleDelete : handleEdit}
+                  ref={btnConfirmRef}
+                  autoFocus
+                  className={`focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2 rounded-md ${
+                    eliminar ? "bg-red-500" : "bg-indigo-500"
+                  } py-1 px-2 text-white`}
+                >
+                  Confirmar
+                </button>
+                <button
+                  onClick={() => setOpenDialogue(false)}
+                  ref={btnCancelRef}
+                  className="focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 rounded-md bg-gray-500 p-1 px-2 text-white"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </Dialog>
+        </td>
+      </PrivateComponent>
     </tr>
   );
 };

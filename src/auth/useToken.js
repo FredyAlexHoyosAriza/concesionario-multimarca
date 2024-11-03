@@ -2,9 +2,11 @@ import { useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useAuth0 } from "@auth0/auth0-react";
 import { updateRecs } from "utils/api";
+import { useUser } from "context/UserProvider";
 
 const useToken = () => {
-  const { getAccessTokenSilently } = useAuth0();//, getIdTokenClaims
+  const { getAccessTokenSilently } = useAuth0(); //, getIdTokenClaims
+  const { setUserData } = useUser();
 
   // Función que renueva el token utilizando el contexto de Auth0
   const refreshToken = useCallback(async () => {
@@ -28,7 +30,11 @@ const useToken = () => {
       //Se hace query al back para actualizar y guardar, sino existe, la userInfo en el token
       await updateRecs(
         "usuarios/self",
-        (response) => console.log(response.data),
+        (response) => {
+          console.log(response.data);
+          // setUserData(response.data);
+          setUserData(jwtDecode(newAccessToken)["http://localhost/userInfo"]);
+        },
         (error) => console.error(error)
       );
       //---------------------------------------------------------------------------------
@@ -37,7 +43,7 @@ const useToken = () => {
       console.error(e.message);
       return null;
     }
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, setUserData]);
 
   // Verifica el token y lo renueva si es necesario
   const verifyAndGetToken = useCallback(async () => {
@@ -56,12 +62,15 @@ const useToken = () => {
         return await refreshToken();
       }
 
+      setUserData(
+        jwtDecode(localStorage.getItem("token"))["http://localhost/userInfo"]
+      );
       return storedToken;
     } catch (error) {
       console.error("Invalid token, getting new one", error);
       return await refreshToken();
     }
-  }, [refreshToken]);
+  }, [refreshToken, setUserData]);
 
   return { verifyAndGetToken, refreshToken }; // Devuelve directamente la función
 };

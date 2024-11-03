@@ -1,12 +1,14 @@
 // ThemeContext.js (puedes usar .js o .jsx)
 import React, { createContext, useState, useContext } from 'react';
+import { useUser } from './UserProvider';
 
 // Crear el contexto
 export const ThemeContext = createContext(null);
 
 // Crear el ThemeProvider
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(true);
+  const { userData } = useUser();
+  const [theme, setTheme] = useState(userData.theme_preference==='light');
 
   const toggleTheme = () => {
     // 'light' -> true

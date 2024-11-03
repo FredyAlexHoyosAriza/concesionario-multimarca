@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { editRec, patchRec } from "utils/api";
 import useToken from "auth/useToken";
-import { jwtDecode } from "jwt-decode";
+import { useUser } from "context/UserProvider";
 
 const UserTable = ({ listaUsuarios, setGetUsers }) => {
   const [busqueda, setBusqueda] = useState("");
@@ -92,12 +92,11 @@ const VehicleRow = ({ user, setGetUsers }) => {
   const [opendDialogue, setOpenDialogue] = useState(false);
   const btnConfirmRef = useRef(null);
   const btnCancelRef = useRef(null);
+  const { userData } = useUser();
 
   /* Obtener y decodificar el token, extraer userInfo, y de este el user_id del usuario
   loggeado, para establecer si es el mismo de la fila (registro) de usuario actual en la tabla */
-  const isCurrentUser =
-    jwtDecode(localStorage.getItem("token"))["http://localhost/userInfo"]
-      .user_id === user.user_id;
+  const isCurrentUser = userData.user_id === user.user_id;
 
   const handleKeyDown = (e) => {
     if (e.key === "ArrowRight") {

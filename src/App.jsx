@@ -15,6 +15,7 @@ import ManageProfile from "pages/admin/ManageProfile";
 import { ThemeProvider } from "context/ThemeProvider";
 import { Auth0Provider } from "@auth0/auth0-react";
 import ManageUsers from "pages/admin/users/ManageUsers";
+import { UserProvider } from "context/UserProvider";
 
 export default function App() {
   return (
@@ -23,35 +24,37 @@ export default function App() {
       clientId="0t5PQUlCHw7bO5wbwWGpGzkoK4H8oXr4"
       authorizationParams={{
         redirect_uri: `${window.location.origin}/admin`,
-        audience: 'http://api-concesionario/',//el mismo del backend; id de api de auth0
+        audience: "http://api-concesionario/", //el mismo del backend; id de api de auth0
         // scope: "read:current_user update:current_user_metadata",
       }}
     >
-      <ThemeProvider>
-        <Router>
-          <Routes>
-            <Route path="/admin" element={<PrivateLayout />}>
-              <Route path="vehicles" element={<ManageVehicles />}>
-                <Route path="create" element={null} />
+      <UserProvider>
+        <ThemeProvider>
+          <Router>
+            <Routes>
+              <Route path="/admin" element={<PrivateLayout />}>
+                <Route path="vehicles" element={<ManageVehicles />}>
+                  <Route path="create" element={null} />
+                </Route>
+                <Route path="clients" element={<ManageClients />} />
+                <Route path="sales" element={<ManageSales />} />
+                <Route path="profile" element={<ManageProfile />} />
+                <Route path="users" element={<ManageUsers />} />
+                <Route index element={<AdminScreen />} />
               </Route>
-              <Route path="clients" element={<ManageClients />} />
-              <Route path="sales" element={<ManageSales />} />
-              <Route path="profile" element={<ManageProfile />} />
-              <Route path="users" element={<ManageUsers />} />
-              <Route index element={<AdminScreen />} />
-            </Route>
 
-            <Route path="/" element={<AuthLayout />}>
-              <Route path="register" element={<RegisterScreen />} />
-              <Route path="login" element={<LoginScreen />} />
-            </Route>
+              <Route path="/" element={<AuthLayout />}>
+                <Route path="register" element={<RegisterScreen />} />
+                <Route path="login" element={<LoginScreen />} />
+              </Route>
 
-            <Route path="/" element={<PublicLayout />}>
-              <Route index element={<Index />} />
-            </Route>
-          </Routes>
-        </Router>
-      </ThemeProvider>
+              <Route path="/" element={<PublicLayout />}>
+                <Route index element={<Index />} />
+              </Route>
+            </Routes>
+          </Router>
+        </ThemeProvider>
+      </UserProvider>
     </Auth0Provider>
   );
 }
