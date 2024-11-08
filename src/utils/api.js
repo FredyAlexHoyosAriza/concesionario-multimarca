@@ -2,7 +2,7 @@ import axios from "axios";
 
 //Este-es-un-interceptor-de-axios-funciona-como-una-especie-de-middleware-o-factor-común;-evita-redundancia
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api/",
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 apiClient.interceptors.request.use(

@@ -21,11 +21,11 @@ import PrivateRoute from "components/PrivateRoute";
 export default function App() {
   return (
     <Auth0Provider
-      domain="dev-oqtggp7qfwvt0b01.us.auth0.com"
-      clientId="0t5PQUlCHw7bO5wbwWGpGzkoK4H8oXr4"
-      authorizationParams={{
-        redirect_uri: `${window.location.origin}/admin`,
-        audience: "http://api-concesionario/", //el mismo del backend; id de api de auth0
+    domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+    authorizationParams={{
+      redirect_uri: `${window.location.origin}/admin`,
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE, //el mismo del backend; id de api de auth0
         // scope: "read:current_user update:current_user_metadata",
       }}
     >

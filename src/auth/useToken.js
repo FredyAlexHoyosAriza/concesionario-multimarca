@@ -25,7 +25,7 @@ const useToken = () => {
       const newAccessToken = await getAccessTokenSilently({
         ignoreCache: true, //cacheMode: 'off',
         authorizationParams: {
-          audience: "http://api-concesionario/",
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
           // scope: "read:current_user", //scope: "openid", // Asegura que se incluya el ID Token
         },
       });
@@ -67,11 +67,12 @@ const useToken = () => {
     try {
       const decodedToken = jwtDecode(storedToken);
       const currentTime = Date.now() / 1000;
+      const expirationBuffer = Number(process.env.REACT_APP_TOKEN_EXPIRATION_BUFFER) || 60;
 
       // Se verifica 60 segundos antes de expirar
       //     00:59:01 + 00:01:00 > 01:00:00 -> true
       //     01:00:01            > 01:00:00 -> true
-      if (currentTime + 60 > decodedToken.exp) {
+      if (currentTime + expirationBuffer > decodedToken.exp) {
         console.warn(
           "Token is close to expiring or has expired, refreshing..."
         );
