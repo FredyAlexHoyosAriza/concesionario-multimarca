@@ -1,18 +1,15 @@
 import { Dialog } from "@mui/material";
 import ScientificNotation from "components/ScientificNotation";
-import { nanoid } from "nanoid";
 import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 const ShoppingCart = ({ vehicles, updateVehicle, deleteVehicle, total }) => {
   return (
     <div className="tabla">
-      <legend>
-        <legend className="text-center font-extrabold my-2">
-          Carrito de compras
-        </legend>
+      <legend className="text-center font-extrabold my-2">
+        Carrito de compras
       </legend>
-      <div className="hidden md:block">
+      <div className="hidden sm:block">
         <table className="w-full min-w-96">
           <thead>
             <tr>
@@ -27,15 +24,15 @@ const ShoppingCart = ({ vehicles, updateVehicle, deleteVehicle, total }) => {
           </thead>
           <tbody>
             {vehicles.map((vehicleSale) => {
-              // { cantidad, marca, gama, modelo, color, precio }
+              // { _id, cantidad, marca, gama, modelo, color, precio }
               return (
                 <SaleRow
-                  key={nanoid()}
+                  key={vehicleSale._id}
                   vehicle={vehicleSale}
                   updateVehicle={updateVehicle}
                   deleteVehicle={deleteVehicle}
                 />
-                //   <tr key={nanoid()}>
+                //   <tr key={_id}>
                 //     <td>{cantidad}</td>
                 //     <td>{marca}</td>
                 //     <td>{gama}</td>
@@ -60,6 +57,29 @@ const ShoppingCart = ({ vehicles, updateVehicle, deleteVehicle, total }) => {
             </tr>
           </tbody>
         </table>
+      </div>
+      <div>
+        <div className="flex flex-wrap justify-around sm:hidden">
+          {vehicles.map(({ _id, marca, gama, modelo, color, cantidad, precio }) => {
+            //({ cantidad, marca, gama, modelo, color, precio }) // Cards para tamaños pequeños
+            return (
+              <div
+                key={_id}
+                className="bg-slate-500 text-white p-2 m-2 rounded-lg flex flex-col"
+              >
+                <span>Marca: {marca} </span>
+                <span>Gama: {gama} </span>
+                <span>Modelo: {modelo} </span>
+                <span>Color: {color} </span>
+                <span>Cantidad: {cantidad} </span>
+                <span>Total: {precio.toExponential(2)} </span>
+              </div>
+            );
+          })}
+          <legend className="text-center font-extrabold my-2">
+          Total: <ScientificNotation number={total} />
+        </legend>
+        </div>
       </div>
     </div>
   );

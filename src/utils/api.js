@@ -20,7 +20,7 @@ apiClient.interceptors.request.use(
 );
 //---Hasta aquí va el interceptor de axios apiClient-------------------------------------------------
 
-export const updateRecs = async (urlPart, successCallback, errorCallback) => {
+export const getRecs = async (urlPart, successCallback, errorCallback) => {
   //Se usa slash (/) al final para que funcione en Safari
   try {
     const response = await apiClient.get(`${urlPart}/`);

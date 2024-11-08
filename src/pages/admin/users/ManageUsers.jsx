@@ -2,7 +2,7 @@ import Loading from "components/Loading";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { updateRecs } from "utils/api";
+import { getRecs } from "utils/api";
 import UserTable from "./UserTable";
 
 const ManageUsers = () => {
@@ -12,14 +12,14 @@ const ManageUsers = () => {
   const urlPart = "usuarios";
 
   // success callback
-  const updatedRecs = (response) => {
+  const gettedRecs = (response) => {
     setUsers(response.data);
     toast.success("Tabla actualizada con exito!!!");
     //Solicitar nuevo token cuando el usuario admin realiza cambios sobre si mismo
   };
 
   // error callback
-  const notUpdatedRecs = (error) => {
+  const notGettedRecs = (error) => {
     console.error(error);
     toast.error("La tabla no pudo ser actualizada");
   };
@@ -27,7 +27,7 @@ const ManageUsers = () => {
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      await updateRecs(urlPart, updatedRecs, notUpdatedRecs);
+      await getRecs(urlPart, gettedRecs, notGettedRecs);
       setIsLoading(false);
     })();
   }, [getUsers]);

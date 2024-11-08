@@ -1,9 +1,8 @@
 import { Dialog } from "@mui/material"; //, Tooltip
-import { nanoid } from "nanoid";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { editRec, patchRec } from "utils/api";
-import useToken from "auth/useToken";
+// import useToken from "auth/useToken";
 import { useUser } from "context/UserProvider";
 
 const UserTable = ({ listaUsuarios, setGetUsers }) => {
@@ -52,7 +51,7 @@ const UserTable = ({ listaUsuarios, setGetUsers }) => {
               //({ ..., _id, name, email, role, created_at })
               return (
                 <VehicleRow
-                  key={nanoid()}
+                  key={usuario._id}
                   user={usuario}
                   setGetUsers={setGetUsers}
                 />
@@ -62,15 +61,15 @@ const UserTable = ({ listaUsuarios, setGetUsers }) => {
         </table>
       </div>
       <div className="flex flex-wrap justify-around sm:hidden">
-        {usuariosBusqueda.map(({ name, email, role, blocked }) => {
+        {usuariosBusqueda.map(({ _id, name, email, role, blocked }) => {
           //({ ..., _id, name, email, role, created_at }) // Cards para tamaños pequeños
           return (
             <div
-              key={nanoid()}
+              key={_id}
               className="bg-slate-500 text-white p-2 m-2 rounded-lg flex flex-col"
             >
-              <span>Nombre: {name} </span>
               <span>Correo: {email} </span>
+              <span>Nombre: {name} </span>
               <span>Rol: {role} </span>
               <span>Estado: {blocked ? "Inactivo" : "Activo"} </span>
             </div>
@@ -85,14 +84,14 @@ const VehicleRow = ({ user, setGetUsers }) => {
   const { _id, ...userNoId } = user;
   const isDisabled = user.blocked;
   const urlPart = `usuarios/${_id}`;
-  const { refreshToken } = useToken();
+  // const { refreshToken } = useToken();
   const [editar, setEditar] = useState(false);
   const [eliminar, setEliminar] = useState(false);
   const [usuario, setUsuario] = useState(userNoId);
   const [opendDialogue, setOpenDialogue] = useState(false);
   const btnConfirmRef = useRef(null);
   const btnCancelRef = useRef(null);
-  const { userData } = useUser();
+  const { userData, setUserData } = useUser();
 
   /* Obtener y decodificar el token, extraer userInfo, y de este el user_id del usuario
   loggeado, para establecer si es el mismo de la fila (registro) de usuario actual en la tabla */
@@ -113,19 +112,20 @@ const VehicleRow = ({ user, setGetUsers }) => {
     }));
   };
 
-  const handleEmail = (e) => {
-    setUsuario((prevUser) => ({
-      ...prevUser,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  // const handleEmail = (e) => {
+  //   setUsuario((prevUser) => ({
+  //     ...prevUser,
+  //     [e.target.name]: e.target.value,
+  //   }));
+  // };
 
   //-------------------------------------------------
 
   // success callback
   const updatedRec = (response) => {
     //En caso de que se cambie, p. ej. name o email de usuario actual se debe solicitar nuevo token
-    if (isCurrentUser) refreshToken();
+    // if (isCurrentUser) (async () => await refreshToken())();
+    if (isCurrentUser) setUserData({ ...usuario });
     setGetUsers((prevGetUsers) => !prevGetUsers);
     setEditar(false);
     console.log(response.data);
@@ -143,9 +143,11 @@ const VehicleRow = ({ user, setGetUsers }) => {
     /*Solo se editan usuarios con menos privilegios; admin puede editar seller y user*/
     //No se permite editar rol del usuario actual ni la fecha de creación de nadie,
     //solo name, email y role; email debe tener formato de email, auth0 debería verificar
-    setOpenDialogue(false);
-    // toast.warn("El precio debe ser mayor a 0");
-    await editRec(usuario, urlPart, updatedRec, unupdatedRec);
+    if (usuario.name !== user.name || usuario.role !== user.role) {
+      setOpenDialogue(false);
+      // toast.warn("El precio debe ser mayor a 0");
+      await editRec(usuario, urlPart, updatedRec, unupdatedRec);
+    }
   };
   //---------------------------------------------------------------------
 
@@ -154,7 +156,9 @@ const VehicleRow = ({ user, setGetUsers }) => {
   const toggledStatus = (response) => {
     //Un usuario no se elimina se bloquea con blocked = true
     /*Solo se bloquean usuarios con menos privilegios; admin puede bloquear seller y user*/
-    toast.success(`Usuario ${isDisabled ? 'desbloqueado' : 'bloqueado'} con exito!!!`);
+    toast.success(
+      `Usuario ${isDisabled ? "desbloqueado" : "bloqueado"} con exito!!!`
+    );
     setGetUsers((prevGetUsers) => !prevGetUsers);
     setEliminar(false);
     console.log(response.data);
@@ -164,7 +168,9 @@ const VehicleRow = ({ user, setGetUsers }) => {
   // error callback
   const statusNotToggled = (error) => {
     console.error(error);
-    toast.error(`El usuario no pudo ser ${isDisabled ? 'desbloqueado' : 'bloqueado'}`);
+    toast.error(
+      `El usuario no pudo ser ${isDisabled ? "desbloqueado" : "bloqueado"}`
+    );
   };
 
   const toggleStatus = async () => {
@@ -180,6 +186,7 @@ const VehicleRow = ({ user, setGetUsers }) => {
   //---------------------------------------------------------------------
   return (
     <tr className={editar ? "editar" : eliminar ? "eliminar" : ""}>
+      <td>{user.email}</td>
       {editar ? (
         <>
           <td>
@@ -191,7 +198,7 @@ const VehicleRow = ({ user, setGetUsers }) => {
               onChange={handleUser}
             ></input>
           </td>
-          <td>
+          {/* <td>
             <input
               type="email"
               name="email"
@@ -199,7 +206,7 @@ const VehicleRow = ({ user, setGetUsers }) => {
               value={usuario.email}
               onChange={handleEmail}
             ></input>
-          </td>
+          </td> */}
           <td>
             <select
               value={usuario.role}
@@ -230,7 +237,6 @@ const VehicleRow = ({ user, setGetUsers }) => {
       ) : (
         <>
           <td>{user.name}</td>
-          <td>{user.email}</td>
           <td>{user.role}</td>
         </>
       )}

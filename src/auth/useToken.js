@@ -1,18 +1,29 @@
 import { useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useAuth0 } from "@auth0/auth0-react";
-import { updateRecs } from "utils/api";
+import { getRecs } from "utils/api";
 import { useUser } from "context/UserProvider";
 
 const useToken = () => {
-  const { getAccessTokenSilently } = useAuth0(); //, getIdTokenClaims
+  const { getAccessTokenSilently, logout } = useAuth0(); //, getIdTokenClaims
   const { setUserData } = useUser();
+
+  const handleLogout = useCallback(
+    (error) => {
+      //No acepta un token válido p. ej. si el back está apagado
+      console.error(error);
+      logout({ logoutParams: { returnTo: window.location.origin } });
+      localStorage.setItem("token", "");
+      setUserData("");
+    },
+    [logout, setUserData]
+  );
 
   // Función que renueva el token utilizando el contexto de Auth0
   const refreshToken = useCallback(async () => {
     try {
       const newAccessToken = await getAccessTokenSilently({
-        ignoreCache: true,
+        ignoreCache: true, //cacheMode: 'off',
         authorizationParams: {
           audience: "http://api-concesionario/",
           // scope: "read:current_user", //scope: "openid", // Asegura que se incluya el ID Token
@@ -27,15 +38,15 @@ const useToken = () => {
       // console.log("ID Token:", idToken);
       //-----------------------------------------
       localStorage.setItem("token", newAccessToken);
-      //Se hace query al back para actualizar y guardar, sino existe, la userInfo en el token
-      await updateRecs(
+      //Se hace query al back para actualizar o crear, registro con userInfo en DB
+      await getRecs(
         "usuarios/self",
         (response) => {
           console.log(response.data);
           // setUserData(response.data);
           setUserData(jwtDecode(newAccessToken)["http://localhost/userInfo"]);
         },
-        (error) => console.error(error)
+        handleLogout
       );
       //---------------------------------------------------------------------------------
       return newAccessToken;
@@ -43,7 +54,7 @@ const useToken = () => {
       console.error(e.message);
       return null;
     }
-  }, [getAccessTokenSilently, setUserData]);
+  }, [getAccessTokenSilently, setUserData, handleLogout]);
 
   // Verifica el token y lo renueva si es necesario
   const verifyAndGetToken = useCallback(async () => {
@@ -57,20 +68,42 @@ const useToken = () => {
       const decodedToken = jwtDecode(storedToken);
       const currentTime = Date.now() / 1000;
 
-      if (decodedToken.exp < currentTime - 3600) {
-        console.error("Token has expired, getting new one");
+      // Se verifica 60 segundos antes de expirar
+      //     00:59:01 + 00:01:00 > 01:00:00 -> true
+      //     01:00:01            > 01:00:00 -> true
+      if (currentTime + 60 > decodedToken.exp) {
+        console.warn(
+          "Token is close to expiring or has expired, refreshing..."
+        );
         return await refreshToken();
       }
 
-      setUserData(
-        jwtDecode(localStorage.getItem("token"))["http://localhost/userInfo"]
+      /*Solo se requeriría si un usuario admin realiza modificación sobre su cuenta propia de
+      usuario, no sierra sesión y se reconecta antes de vencer el token en 24 horas */
+      // const urlPart = `usuarios/${
+      //   decodedToken["http://localhost/userInfo"].user_id
+      // }`;
+      await getRecs(
+        "usuarios/self-get",
+        (response) => setUserData(response.data),
+        handleLogout
       );
+
+      // await getRecs(
+      //   "usuarios/self",
+      //   (response) => {
+      //     console.log(response.data);
+      //     setUserData(response.data);
+      //     // setUserData(decodedToken["http://localhost/userInfo"]);
+      //   },
+      //   (error) => console.error(error)
+      // );
       return storedToken;
     } catch (error) {
       console.error("Invalid token, getting new one", error);
       return await refreshToken();
     }
-  }, [refreshToken, setUserData]);
+  }, [refreshToken, setUserData, handleLogout]);
 
   return { verifyAndGetToken, refreshToken }; // Devuelve directamente la función
 };

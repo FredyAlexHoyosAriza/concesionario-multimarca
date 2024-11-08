@@ -16,6 +16,7 @@ import { ThemeProvider } from "context/ThemeProvider";
 import { Auth0Provider } from "@auth0/auth0-react";
 import ManageUsers from "pages/admin/users/ManageUsers";
 import { UserProvider } from "context/UserProvider";
+import PrivateRoute from "components/PrivateRoute";
 
 export default function App() {
   return (
@@ -33,13 +34,21 @@ export default function App() {
           <Router>
             <Routes>
               <Route path="/admin" element={<PrivateLayout />}>
-                <Route path="vehicles" element={<ManageVehicles />}>
-                  <Route path="create" element={null} />
+                <Route element={<PrivateRoute roles={['seller', 'client']} />}>
+                  <Route path="vehicles" element={<ManageVehicles />}>
+                    <Route element={<PrivateRoute />}>
+                      <Route path="create" element={null} />
+                    </Route>
+                  </Route>
                 </Route>
-                <Route path="clients" element={<ManageClients />} />
-                <Route path="sales" element={<ManageSales />} />
+                <Route element={<PrivateRoute roles={["seller"]} />}>
+                  <Route path="clients" element={<ManageClients />} />
+                  <Route path="sales" element={<ManageSales />} />
+                </Route>
                 <Route path="profile" element={<ManageProfile />} />
-                <Route path="users" element={<ManageUsers />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="users" element={<ManageUsers />} />
+                </Route>
                 <Route index element={<AdminScreen />} />
               </Route>
 

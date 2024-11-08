@@ -4,12 +4,14 @@ import { Link, useLocation } from "react-router-dom";
 import LogoConcesionario from "./LogoConcesionario";
 import useActiveRoute from "./hooks/useActiveRoute";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "context/UserProvider";
+import PrivateComponent from "./PrivateComponent";
 
 const SideBar = () => {
   const { pathname } = useLocation();
   const { theme, toggleTheme } = useTheme();
-  const { user, logout } = useAuth0();
-
+  const { logout } = useAuth0();
+  const { userData, setUserData } = useUser();
   // const [seleccion, setSeleccion] = useState([true, false, false, false, false]);
   // onClick={() => setSeleccion([true, false, false, false, false])}
   return (
@@ -22,11 +24,17 @@ const SideBar = () => {
         >
           <LogoConcesionario />
         </Link>
-        <Ruta ruta="profile" icono="user" usuario={user} />
-        <Ruta ruta="clients" icono="mug-hot" />
-        <Ruta ruta="users" icono="users" />
-        <Ruta ruta="vehicles" icono="car" />
-        <Ruta ruta="sales" icono="cash-register" />
+        <Ruta ruta="profile" icono="user" usuario={userData} />
+        <PrivateComponent>
+          <Ruta ruta="users" icono="users" />
+        </PrivateComponent>
+        <PrivateComponent roles={['seller', 'client']}>
+          <Ruta ruta="vehicles" icono="car" />
+        </PrivateComponent>
+        <PrivateComponent roles={['seller']}>
+          <Ruta ruta="clients" icono="mug-hot" />
+          <Ruta ruta="sales" icono="cash-register" />
+        </PrivateComponent>
         <button
           className={`menu__button ${
             theme ? "menu__button--light" : "menu__button--dark"
@@ -34,6 +42,7 @@ const SideBar = () => {
           onClick={() => {
             logout({ logoutParams: { returnTo: window.location.origin } });
             localStorage.setItem("token", "");
+            setUserData('');
           }}
         >
           Log Out

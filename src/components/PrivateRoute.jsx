@@ -1,31 +1,25 @@
-import React, { useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
-import useToken from "auth/useToken";
-import Loading from "./Loading";
+import { useUser } from 'context/UserProvider';
+import { useEffect, useMemo } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ roles = [] }) => {//, 'seller'
+  const roleList = useMemo(() => ['admin', ...roles], [roles]);
+  const { userData } = useUser(); // Usuario autenticado
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading } = useAuth0();
-  // En tanto el user no este autenticado isLoading es true
-  const { verifyAndGetToken } = useToken();
+  const location = useLocation();
+
+  const hasAccess = roleList.includes(userData.role);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) navigate("/");
-
-    // Cada vez que cambie isLoading o isAuthenticated y este último sea true se solicita un nuevo token
-    if (isAuthenticated) (async () => await verifyAndGetToken())();
-  }, [isLoading, isAuthenticated, navigate, verifyAndGetToken]);
-
-  if (isLoading) {
-    return (
-      <div className="bg-slate-900 w-screen h-screen grid place-items-center">
-        <Loading />
-      </div>
-    );
-  }
-
-  return isAuthenticated && children;
+    if (!hasAccess) {
+      // Redirige a la ruta previa o, si no existe, regresa una página en el historial
+      navigate(location.state?.from || -1, { replace: true });
+    }
+  }, [userData.role, roleList, navigate, location, hasAccess]);
+  
+  /*si el usuario hace un click que lo dirige a ruta prohibida es regresado a su ruta anterior,
+  si el usuario trata de ingresar desde barra de direcciones, entonces se muestra null*/
+  return hasAccess ? <Outlet /> : null;
 };
 
 export default PrivateRoute;

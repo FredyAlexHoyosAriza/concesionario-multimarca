@@ -1,7 +1,6 @@
-import { nanoid } from "nanoid";
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { saveRec, updateRecs } from "utils/api";
+import { saveRec, getRecs } from "utils/api";
 import ShoppingCart from "./ShoppingCart";
 
 const ManageSales = () => {
@@ -13,7 +12,7 @@ const ManageSales = () => {
 
   useEffect(() => {
     (async () =>
-      updateRecs(
+      getRecs(
         "usuarios",
         (response) => {
           setSellers(response.data);
@@ -23,7 +22,7 @@ const ManageSales = () => {
         }
       ))();
     (async () =>
-      updateRecs(
+      getRecs(
         "vehiculos",
         (response) => {
           setDbVehicles(response.data);
@@ -32,6 +31,8 @@ const ManageSales = () => {
           console.error(error);
         }
       ))();
+      //Sí existe venta en localStorage se guarda en estados total, vehicles y selectedSeller,
+      //sino se guarda venta en localStorage
   }, []);
 
   const handleSellerChange = (e) => {
@@ -152,10 +153,10 @@ const ManageSales = () => {
           <option value={""} disabled>
             Seleccione un vendedor
           </option>
-          {sellers.map(({ nombre, _id }) => {
+          {sellers.map(({ name, _id }) => {
             return (
-              <option key={nanoid()} value={_id}>
-                {nombre}
+              <option key={_id} value={_id}>
+                {name}
               </option>
             );
           })}
@@ -181,7 +182,7 @@ const ManageSales = () => {
               {dbVehicles.map(({ _id, marca, modelo, gama, color, precio }) => {
                 return (
                   <option
-                    key={nanoid()}
+                    key={_id}
                     value={_id}
                   >{`${marca} ${modelo} ${gama} ${color} ${precio.toExponential(2)}`}</option>
                 );

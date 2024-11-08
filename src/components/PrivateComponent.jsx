@@ -1,8 +1,9 @@
 import { useUser } from "context/UserProvider";
 import React from "react";
 
-const PrivateComponent = ({ roleList=['admin'], children }) => {
-    const { userData } = useUser();
+const PrivateComponent = ({ roles=[], children }) => {
+  const roleList = ['admin', ...roles];
+  const { userData } = useUser();
   if (roleList.includes(userData.role)) return children;
   return <></>;
 };

@@ -1,7 +1,6 @@
 import { Dialog } from "@mui/material"; //, Tooltip
 import PrivateComponent from "components/PrivateComponent";
 import ScientificNotation from "components/ScientificNotation";
-import { nanoid } from "nanoid";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { editRec, deleteRec } from "utils/api";
@@ -57,7 +56,7 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
               //({ _id, marca, gama, modelo, color, precio })
               return (
                 <VehicleRow
-                  key={nanoid()}
+                  key={vehiculo._id}
                   vehicle={vehiculo}
                   setGetVehicles={setGetVehicles}
                 />
@@ -67,11 +66,11 @@ const VehicleTable = ({ listaVehiculos, setGetVehicles }) => {
         </table>
       </div>
       <div className="flex flex-wrap justify-around sm:hidden">
-        {vehiculosBusqueda.map(({ marca, gama, modelo, color, precio }) => {
+        {vehiculosBusqueda.map(({ _id, marca, gama, modelo, color, precio }) => {
           //({ _id, marca, gama, modelo, color, precio }) // Cards para tamaños pequeños
           return (
             <div
-              key={nanoid()}
+              key={_id}
               className="bg-slate-500 text-white p-2 m-2 rounded-lg flex flex-col"
             >
               <span>Marca: {marca} </span>

@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import VehicleTable from "./VehicleTable";
 import AddDbVehicle from "./AddDbVehicle";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { updateRecs, saveRec } from "utils/api";
+import { getRecs, saveRec } from "utils/api";
 import Loading from "components/Loading";
 import PrivateComponent from "components/PrivateComponent";
 import { useUser } from "context/UserProvider";
@@ -18,34 +18,36 @@ const ManageVehicles = () => {
   const navigate = useNavigate();
   const urlPart = "vehiculos";
   const { userData } = useUser();
+  const isAcceptedRole = ['admin'].includes(userData.role);//, 'seller'
 
   // success callback
-  const updatedRecs = (response) => {
+  const gettedRecs = (response) => {
     setVehiculos(response.data);
     toast.success("Tabla actualizada con exito!!!");
   };
 
   // error callback
-  const notUpdatedRecs = (error) => {
+  const notGettedRecs = (error) => {
     console.error(error);
     toast.error("La tabla no pudo ser actualizada");
   };
 
   useEffect(() => {
     if (pathname === "/admin/vehicles/create") {
-      setShowTable(false);
+      if (isAcceptedRole) setShowTable(false);
+      else navigate("/admin/vehicles");
     }
     (async () => {
       setIsLoading(true);
-      await updateRecs(urlPart, updatedRecs, notUpdatedRecs);
+      await getRecs(urlPart, gettedRecs, notGettedRecs);
       setIsLoading(false);
     })();
-  }, [getVehicles, pathname]);
+  }, [getVehicles, pathname, isAcceptedRole, navigate]);
 
   // succes callback
   const savedVehicle = async (response) => {
     console.log(response.data);
-    // await updateRecs(urlPart, updatedRecs, notUpdatedRecs); //mejor esta alternativak
+    // await getRecs(urlPart, gettedRecs, notGettedRecs); //mejor esta alternativak
     navigate("/admin/vehicles");
     setGetVehicles((prevGetVehicles) => !prevGetVehicles); //alternativa
     setShowTable(true);
@@ -65,7 +67,7 @@ const ManageVehicles = () => {
   return (
     <div className="flex-grow mt-4 sm:mx-4 flex flex-col items-center">
       <div className="flex flex-col w-fit lg:w-full lg:flex-row mb-8 pb-8 border-b-4 border-green-950">
-        <h2 className={`mx-auto ${userData.role==='admin'&&'lg:translate-x-20'} text-xl sm:text-3xl text-center font-bold text-slate-950`}>
+        <h2 className={`mx-auto ${isAcceptedRole && 'lg:translate-x-20'} text-xl sm:text-3xl text-center font-bold text-slate-950`}>
           Administración de vehículos
         </h2>
         <PrivateComponent>
