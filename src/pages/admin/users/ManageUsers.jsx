@@ -1,6 +1,5 @@
 import Loading from "components/Loading";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { getRecs } from "utils/api";
 import UserTable from "./UserTable";

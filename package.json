@@ -49,9 +49,5 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1"
-  },
-  "engines": {
-    "node": "20.11.1",
-    "yarn": "1.22.21"
   }
 }

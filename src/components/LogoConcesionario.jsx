@@ -1,5 +1,5 @@
-import React from 'react'
-import concessionaireLogo from 'media/concesionario-de-coches.png'
+import React from 'react';
+import concessionaireLogo from 'media/concesionario-de-coches.png';
 
 const LogoConcesionario = () => {
   return (// mx-auto
