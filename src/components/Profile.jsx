@@ -5,9 +5,9 @@ import { useUser } from "context/UserProvider";
 const Profile = () => {
   const { userData } = useUser();
   return (
-    <div>
-      <h1>User info</h1>
-      <img src={userData.picture} alt={userData.name} />
+    <div className="flex-grow flex flex-col my-4 place-items-center self-center text-center font-bold text-xl text-slate-900">
+      <h1 className="text-2xl">Información de usuario</h1>
+      <img className="my-4 rounded-full w-2/3 mx-auto" src={userData.picture} alt={userData.name} />
       <h2>{userData.name}</h2>
       <p>Email: {userData.email}</p>
       <p>Role: {userData.role}</p>
