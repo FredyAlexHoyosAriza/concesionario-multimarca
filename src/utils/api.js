@@ -12,6 +12,8 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // Imprimir la URL completa antes de hacer la solicitud
+    // console.log(`Making request to: ${config.baseURL}${config.url}`);
     return config;
   },
   (error) => {
@@ -23,6 +25,8 @@ apiClient.interceptors.request.use(
 export const getRecs = async (urlPart, successCallback, errorCallback) => {
   //Se usa slash (/) al final para que funcione en Safari
   try {
+    // const fullUrl = `${urlPart}/`; // Crear la URL completa
+    // console.log(`Request URL: ${fullUrl}`); // Imprimir la URL
     const response = await apiClient.get(`${urlPart}/`);
     successCallback(response);
   } catch (error) {

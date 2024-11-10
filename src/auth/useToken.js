@@ -85,7 +85,7 @@ const useToken = () => {
       //   decodedToken["http://localhost/userInfo"].user_id
       // }`;
       await getRecs(
-        "usuarios/self-get",
+        "usuarios/me",
         (response) => setUserData(response.data),
         handleLogout
       );
