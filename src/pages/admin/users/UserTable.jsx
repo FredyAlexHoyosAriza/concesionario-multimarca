@@ -39,8 +39,8 @@ const UserTable = ({ listaUsuarios, setGetUsers }) => {
         <table className="w-full min-w-96">
           <thead>
             <tr>
-              <th> Nombre </th>
               <th> Correo </th>
+              <th> Nombre </th>
               <th> Rol </th>
               <th> Estado </th>
               <th className="w-1/12"> Acciones </th>
