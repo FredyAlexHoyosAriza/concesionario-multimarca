@@ -20,10 +20,10 @@ const NavBar = () => {
             />
           </Link>
         </li>
-        <li>Navegacion 1</li>
-        <li>Navegacion 2</li>
-        <li>Navegacion 3</li>
-        <li>Navegacion 4</li>
+        <li>Mazda</li>
+        <li>Renault</li>
+        <li>Toyota</li>
+        <li>Honda</li>
         <li className="p-2">
           {/* <Link to={"/login"}> */}
           <button

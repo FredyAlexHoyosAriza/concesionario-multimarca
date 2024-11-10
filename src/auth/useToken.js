@@ -34,7 +34,7 @@ const useToken = () => {
       // const idTokenClaims = await getIdTokenClaims();
       // const idToken = idTokenClaims?.__raw; // __raw contiene el ID Token en formato JWT
 
-      console.log("Access Token:", newAccessToken);
+      // console.log("Access Token:", newAccessToken);
       // console.log("ID Token:", idToken);
       //-----------------------------------------
       localStorage.setItem("token", newAccessToken);
