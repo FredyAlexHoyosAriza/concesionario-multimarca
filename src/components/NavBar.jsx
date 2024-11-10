@@ -26,15 +26,20 @@ const NavBar = () => {
         <li>Navegacion 4</li>
         <li className="p-2">
           {/* <Link to={"/login"}> */}
-            <button onClick={() => loginWithRedirect()} className="m-1 bg-indigo-500 p-2 border border-x-sky-900 text-white rounded-lg shadow-gray-400 hover:scale-110 hover:bg-indigo-900">
-              Login
-            </button>
+          <button
+            onClick={() => loginWithRedirect()}
+            className="m-1 bg-indigo-500 p-2 border border-x-sky-900 text-white rounded-lg shadow-gray-400 hover:scale-110 hover:bg-indigo-900"
+          >
+            Login
+          </button>
           {/* </Link> */}
-          <Link to={"/register"}>
-            <button className=" bg-green-600 p-2 border border-x-lime-950 text-white rounded-lg shadow-gray-400 hover:scale-110 hover:bg-indigo-900">
-              Register
-            </button>
-          </Link>
+          <div className="hidden">
+            <Link to={"/register"}>
+              <button className=" bg-green-600 p-2 border border-x-lime-950 text-white rounded-lg shadow-gray-400 hover:scale-110 hover:bg-indigo-900">
+                Register
+              </button>
+            </Link>
+          </div>
         </li>
       </ul>
     </nav>
