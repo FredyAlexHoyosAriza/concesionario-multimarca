@@ -131,112 +131,125 @@ const ManageSales = () => {
   //----------------------------------------------------------------
 
   return (
-    isLoading ? <Loading /> :
     <div className="text-lg">
       <h2 className="mx-auto text-xl sm:text-3xl text-center font-bold text-slate-950 my-2">
         Administración de ventas
       </h2>
-      {/* Formulario de selección del vendedor */}
-      <label htmlFor="vendedor" className="lg:w-full block mb-1">
-        <legend className="font-bold my-2 text-center text-xl">
-          Ingresar vendedor
-        </legend>
-        <select
-          id="vendedor"
-          name="vendedor"
-          className="w-full mt-1 min-h-2 rounded-lg"
-          // required
-          value={selectedSeller._id ?? ""} // Si selectedSeller._id es null o undefined value = ""
-          onChange={handleSellerChange}
-        >
-          <option value={""} disabled>
-            Seleccione un vendedor
-          </option>
-          {sellers.map(({ name, _id }) => {
-            return (
-              <option key={_id} value={_id}>
-                {name}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <form id="venta" onSubmit={handleAddToSale} className="text-lg lg:w-full">
-        <legend className="font-bold mt-2 text-center text-xl">
-          Ingresar venta
-        </legend>
-        <fieldset className="mb-1">
-          <label htmlFor="vehiculo" className="inline-block">
-            <span className="inline-block pl-2">Vehiculo: </span>
+      {isLoading ? (
+        <div className="w-full h-full grid place-items-center">
+          <Loading />
+        </div>
+      ) : (
+        <>
+          {/* Formulario de selección del vendedor */}
+          <label htmlFor="vendedor" className="lg:w-full block mb-1">
+            <legend className="font-bold my-2 text-center text-xl">
+              Ingresar vendedor
+            </legend>
             <select
-              id="vehiculo"
-              name="vehiculo"
+              id="vendedor"
+              name="vendedor"
               className="w-full mt-1 min-h-2 rounded-lg"
-              required
-              defaultValue={""}
+              // required
+              value={selectedSeller._id ?? ""} // Si selectedSeller._id es null o undefined value = ""
+              onChange={handleSellerChange}
             >
               <option value={""} disabled>
-                Seleccione un vehículo
+                Seleccione un vendedor
               </option>
-              {dbVehicles.map(({ _id, marca, modelo, gama, color, precio }) => {
+              {sellers.map(({ name, _id }) => {
                 return (
-                  <option
-                    key={_id}
-                    value={_id}
-                  >{`${marca} ${modelo} ${gama} ${color} ${precio.toExponential(
-                    2
-                  )}`}</option>
+                  <option key={_id} value={_id}>
+                    {name}
+                  </option>
                 );
               })}
             </select>
           </label>
-          <label htmlFor="cantidad" className="inline-block ml-1">
-            <span className="inline-block pl-2">Cantidad: </span>
-            <input
-              id="cantidad"
-              name="cantidad"
-              type="number"
-              min="1"
-              className="w-full mt-1 min-h-2 rounded-lg"
-              defaultValue={1}
-              required
-            />
-          </label>
-        </fieldset>
-        <button
-          type="submit"
-          className="w-full mt-4 min-h-2 rounded-lg p-2 bg-green-700 text-white font-semibold"
-        >
-          Agregar al carrito
-        </button>
-      </form>
-      {/* Carrito de compras */}
-      <ShoppingCart
-        vehicles={vehicles}
-        updateVehicle={updateVehicle}
-        deleteVehicle={deleteVehicle}
-        total={total}
-      />
-      {/* Botón para guardar la venta */}
-      <button
-        type="button"
-        onClick={handleSave}
-        className="w-full mt-4 min-h-2 rounded-lg border-2 border-slate-500 p-2 bg-green-900 text-white font-semibold"
-      >
-        Guardar venta
-      </button>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+          <form
+            id="venta"
+            onSubmit={handleAddToSale}
+            className="text-lg lg:w-full"
+          >
+            <legend className="font-bold mt-2 text-center text-xl">
+              Ingresar venta
+            </legend>
+            <fieldset className="mb-1">
+              <label htmlFor="vehiculo" className="inline-block">
+                <span className="inline-block pl-2">Vehiculo: </span>
+                <select
+                  id="vehiculo"
+                  name="vehiculo"
+                  className="w-full mt-1 min-h-2 rounded-lg"
+                  required
+                  defaultValue={""}
+                >
+                  <option value={""} disabled>
+                    Seleccione un vehículo
+                  </option>
+                  {dbVehicles.map(
+                    ({ _id, marca, modelo, gama, color, precio }) => {
+                      return (
+                        <option
+                          key={_id}
+                          value={_id}
+                        >{`${marca} ${modelo} ${gama} ${color} ${precio.toExponential(
+                          2
+                        )}`}</option>
+                      );
+                    }
+                  )}
+                </select>
+              </label>
+              <label htmlFor="cantidad" className="inline-block ml-1">
+                <span className="inline-block pl-2">Cantidad: </span>
+                <input
+                  id="cantidad"
+                  name="cantidad"
+                  type="number"
+                  min="1"
+                  className="w-full mt-1 min-h-2 rounded-lg"
+                  defaultValue={1}
+                  required
+                />
+              </label>
+            </fieldset>
+            <button
+              type="submit"
+              className="w-full mt-4 min-h-2 rounded-lg p-2 bg-green-700 text-white font-semibold"
+            >
+              Agregar al carrito
+            </button>
+          </form>
+          {/* Carrito de compras */}
+          <ShoppingCart
+            vehicles={vehicles}
+            updateVehicle={updateVehicle}
+            deleteVehicle={deleteVehicle}
+            total={total}
+          />
+          {/* Botón para guardar la venta */}
+          <button
+            type="button"
+            onClick={handleSave}
+            className="w-full mt-4 min-h-2 rounded-lg border-2 border-slate-500 p-2 bg-green-900 text-white font-semibold"
+          >
+            Guardar venta
+          </button>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
+        </>
+      )}
     </div>
   );
 };
