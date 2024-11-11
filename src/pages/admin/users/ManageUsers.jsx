@@ -6,7 +6,7 @@ import UserTable from "./UserTable";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [getUsers, setGetUsers] = useState(false);
   const urlPart = "usuarios";
 
@@ -25,7 +25,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       await getRecs(urlPart, gettedRecs, notGettedRecs);
       setIsLoading(false);
     })();

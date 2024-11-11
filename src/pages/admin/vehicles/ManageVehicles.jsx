@@ -14,7 +14,7 @@ const ManageVehicles = () => {
   const [vehiculos, setVehiculos] = useState([]);
   const [getVehicles, setGetVehicles] = useState(false);
   const { pathname } = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const urlPart = "vehiculos";
   const { userData } = useUser();
@@ -38,7 +38,7 @@ const ManageVehicles = () => {
       else navigate("/admin/vehicles");
     }
     (async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       await getRecs(urlPart, gettedRecs, notGettedRecs);
       setIsLoading(false);
     })();

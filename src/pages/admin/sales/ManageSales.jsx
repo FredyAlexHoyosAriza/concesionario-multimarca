@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { saveRec, getRecs } from "utils/api";
 import ShoppingCart from "./ShoppingCart";
+import Loading from "components/Loading";
 
 const ManageSales = () => {
   const [sellers, setSellers] = useState([]);
@@ -9,30 +10,24 @@ const ManageSales = () => {
   const [dbVehicles, setDbVehicles] = useState([]); // cargados desde DB
   const [vehicles, setVehicles] = useState([]); // vehículos que se agregan a la venta
   const [total, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    (async () =>
-      getRecs(
+    (async () => {
+      await getRecs(
         "usuarios",
-        (response) => {
-          setSellers(response.data);
-        },
-        (error) => {
-          console.error(error);
-        }
-      ))();
-    (async () =>
-      getRecs(
+        (response) => setSellers(response.data),
+        (error) => console.error(error)
+      );
+      await getRecs(
         "vehiculos",
-        (response) => {
-          setDbVehicles(response.data);
-        },
-        (error) => {
-          console.error(error);
-        }
-      ))();
-      //Sí existe venta en localStorage se guarda en estados total, vehicles y selectedSeller,
-      //sino se guarda venta en localStorage
+        (response) => setDbVehicles(response.data),
+        (error) => console.error(error)
+      );
+      setIsLoading(false);
+    })();
+    //Sí existe venta en localStorage se guarda en estados total, vehicles y selectedSeller,
+    //sino se guarda venta en localStorage
   }, []);
 
   const handleSellerChange = (e) => {
@@ -136,7 +131,11 @@ const ManageSales = () => {
   //----------------------------------------------------------------
 
   return (
+    isLoading ? <Loading /> :
     <div className="text-xl">
+      <h2 className="mx-auto text-xl sm:text-3xl text-center font-bold text-slate-950 my-2">
+        Administración de ventas
+      </h2>
       {/* Formulario de selección del vendedor */}
       <label htmlFor="vendedor" className="lg:w-full block mb-1">
         <legend className="font-bold my-2 text-center text-2xl">
@@ -184,7 +183,9 @@ const ManageSales = () => {
                   <option
                     key={_id}
                     value={_id}
-                  >{`${marca} ${modelo} ${gama} ${color} ${precio.toExponential(2)}`}</option>
+                  >{`${marca} ${modelo} ${gama} ${color} ${precio.toExponential(
+                    2
+                  )}`}</option>
                 );
               })}
             </select>
