@@ -132,13 +132,13 @@ const ManageSales = () => {
 
   return (
     isLoading ? <Loading /> :
-    <div className="text-xl">
+    <div className="text-lg">
       <h2 className="mx-auto text-xl sm:text-3xl text-center font-bold text-slate-950 my-2">
         Administración de ventas
       </h2>
       {/* Formulario de selección del vendedor */}
       <label htmlFor="vendedor" className="lg:w-full block mb-1">
-        <legend className="font-bold my-2 text-center text-2xl">
+        <legend className="font-bold my-2 text-center text-xl">
           Ingresar vendedor
         </legend>
         <select
@@ -161,8 +161,8 @@ const ManageSales = () => {
           })}
         </select>
       </label>
-      <form id="venta" onSubmit={handleAddToSale} className="text-xl lg:w-full">
-        <legend className="font-bold mt-2 text-center text-2xl">
+      <form id="venta" onSubmit={handleAddToSale} className="text-lg lg:w-full">
+        <legend className="font-bold mt-2 text-center text-xl">
           Ingresar venta
         </legend>
         <fieldset className="mb-1">
@@ -205,7 +205,7 @@ const ManageSales = () => {
         </fieldset>
         <button
           type="submit"
-          className="w-full mt-4 min-h-2 rounded-lg p-2 bg-green-700 text-white"
+          className="w-full mt-4 min-h-2 rounded-lg p-2 bg-green-700 text-white font-semibold"
         >
           Agregar al carrito
         </button>
@@ -221,7 +221,7 @@ const ManageSales = () => {
       <button
         type="button"
         onClick={handleSave}
-        className="w-full mt-4 min-h-2 rounded-lg border-2 border-slate-500 p-2 bg-green-900 text-white"
+        className="w-full mt-4 min-h-2 rounded-lg border-2 border-slate-500 p-2 bg-green-900 text-white font-semibold"
       >
         Guardar venta
       </button>
