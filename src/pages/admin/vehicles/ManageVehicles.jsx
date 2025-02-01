@@ -27,8 +27,8 @@ const ManageVehicles = () => {
   };
 
   // error callback
-  const notGettedRecs = (error) => {
-    console.error(error);
+  const notGettedRecs = ({ response }) => {
+    console.error(response.data);
     toast.error("La tabla no pudo ser actualizada");
   };
 

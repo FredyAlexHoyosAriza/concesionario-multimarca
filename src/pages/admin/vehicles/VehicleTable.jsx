@@ -225,7 +225,7 @@ const VehicleRow = ({ vehicle, setGetVehicles }) => {
               onChange={(e) => {
                 setVehiculo((prevVehiculo) => ({
                   ...prevVehiculo,
-                  modelo: Number(e.target.value),
+                  modelo: parseInt(e.target.value, 10),
                 }));
               }}
             ></input>
