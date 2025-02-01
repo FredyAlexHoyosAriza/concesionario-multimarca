@@ -71,7 +71,7 @@ npm start
 yarn start
 ```
 
-La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
+La aplicación estará disponible en [https://api-concesionario-multimarca.onrender.com].
 
 ## Estructura del Proyecto 📁
 
@@ -116,7 +116,7 @@ Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más 
 ## Contacto 📬
 
 - **GitHub**: [FredyAlexHoyosAriza](https://github.com/FredyAlexHoyosAriza)
-- **LinkedIn**: [Fredy Alex Hoyos Ariza](https://www.linkedin.com/in/fredyalexanderhoyosariza/)
+- **LinkedIn**: [Fredy Alexander Hoyos Ariza](https://www.linkedin.com/in/fredy-alexander-hoyos-ariza-3b7122167/)
 
 ---
 
