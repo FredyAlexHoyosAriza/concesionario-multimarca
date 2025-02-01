@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+# Concesionario Multimarca 🚗
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Concesionario Multimarca es una aplicación web desarrollada en **React** que permite a los usuarios explorar y gestionar una variedad de vehículos de diferentes marcas. La aplicación ofrece funcionalidades para visualizar detalles de los vehículos, filtrar por categorías y administrar el inventario disponible.
 
-## Available Scripts
+Este proyecto cuenta con autenticación mediante **Auth0**, donde los nuevos usuarios tendrán inicialmente un rol limitado (`user`). Solo los administradores (`admin`) podrán acceder a todas las funcionalidades. Para inspeccionar la app, es necesario registrarse.
 
-In the project directory, you can run:
+El backend está implementado en un proyecto separado llamado **api-concesionario-multimarca** con **Node.js y Express**. Ambos proyectos están desplegados y el frontend puede ser accedido en:
 
-### `npm start`
+🔗 [Concesionario Multimarca en Vercel](https://concesionario-multimarca.vercel.app/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Características 🌟
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Exploración de Vehículos**: Navega por una amplia selección de vehículos de diversas marcas y modelos.
+- **Detalles del Vehículo**: Visualiza información detallada de cada vehículo, incluyendo especificaciones técnicas, precio y disponibilidad.
+- **Filtrado Avanzado**: Filtra vehículos por marca, modelo, año, precio y otras características relevantes.
+- **Gestión de Inventario**: Administra el inventario de vehículos disponibles, incluyendo la adición, edición y eliminación de registros (solo accesible para administradores).
+- **Autenticación con Auth0**: Manejo de usuarios y roles con inicio de sesión seguro.
 
-### `npm test`
+## Tecnologías Utilizadas 🛠️
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend
 
-### `npm run build`
+- **React** - Biblioteca principal para la construcción de la interfaz de usuario.
+- **React Router** - Manejo de rutas y navegación dentro de la aplicación.
+- **Axios** - Realización de solicitudes HTTP para la obtención de datos.
+- **Material UI** - Componentes estilizados para una mejor experiencia de usuario.
+- **Tailwind CSS** - Estilos modernos y reutilizables.
+- **Auth0** - Autenticación segura basada en roles.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Backend (API Concesionario Multimarca)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Node.js** - Entorno de ejecución en el servidor.
+- **Express.js** - Framework para la creación de APIs.
+- **MongoDB + Mongoose** - Base de datos NoSQL para almacenamiento.
+- **GraphQL / REST** - Posible implementación para la comunicación con el frontend.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Instalación y Ejecución 🚀
 
-### `npm run eject`
+Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 1. Clonar el repositorio
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/FredyAlexHoyosAriza/concesionario-multimarca.git
+cd concesionario-multimarca
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 2. Instalar dependencias
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm install
+# o con Yarn
+yarn install
+```
 
-## Learn More
+### 3. Configurar variables de entorno
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```env
+REACT_APP_API_URL=http://localhost:4000/api
+REACT_APP_AUTH0_DOMAIN=your-auth0-domain
+REACT_APP_AUTH0_CLIENT_ID=your-auth0-client-id
+```
 
-### Code Splitting
+### 4. Ejecutar la aplicación
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm start
+# o con Yarn
+yarn start
+```
 
-### Analyzing the Bundle Size
+La aplicación estará disponible en [http://localhost:3000](http://localhost:3000).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Estructura del Proyecto 📁
 
-### Making a Progressive Web App
+```plaintext
+concesionario-multimarca/
+├── public/
+│   ├── index.html
+│   └── ...
+├── src/
+│   ├── components/        # Componentes reutilizables
+│   │   ├── Header.js
+│   │   ├── VehicleList.js
+│   │   ├── VehicleDetail.js
+│   │   └── ...
+│   ├── pages/             # Páginas principales
+│   │   ├── HomePage.js
+│   │   ├── InventoryPage.js
+│   │   └── ...
+│   ├── services/          # Módulos para API y autenticación
+│   │   └── api.js
+│   ├── App.js             # Punto de entrada de la app
+│   ├── index.js           # Renderizado principal
+│   └── ...
+├── package.json
+└── README.md
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Contribuciones 🤝
 
-### Advanced Configuration
+¡Las contribuciones son bienvenidas! Si deseas mejorar o ampliar la funcionalidad de la aplicación:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Haz un fork del proyecto.
+2. Crea una nueva rama: `git checkout -b feature/nueva-funcionalidad`.
+3. Realiza tus cambios y haz commit: `git commit -m 'Añadir nueva funcionalidad'`.
+4. Sube tus cambios: `git push origin feature/nueva-funcionalidad`.
+5. Abre un Pull Request.
 
-### Deployment
+## Licencia 📄
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
 
-### `npm run build` fails to minify
+## Contacto 📬
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **GitHub**: [FredyAlexHoyosAriza](https://github.com/FredyAlexHoyosAriza)
+- **LinkedIn**: [Fredy Alex Hoyos Ariza](https://www.linkedin.com/in/fredyalexanderhoyosariza/)
+
+---
+
+✨ ¡Gracias por revisar este proyecto! Espero que te sea útil. 🚀
