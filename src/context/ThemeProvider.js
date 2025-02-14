@@ -8,7 +8,7 @@ export const ThemeContext = createContext(null);
 // Crear el ThemeProvider
 export const ThemeProvider = ({ children }) => {
   const { userData } = useUser();
-  const [theme, setTheme] = useState(userData.theme_preference || 'dark');
+  const [isLight, setTheme] = useState(userData.theme_preference === 'light');
 
   const toggleTheme = () => {
     // 'light' -> true
@@ -17,7 +17,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ isLight, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

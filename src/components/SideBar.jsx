@@ -9,14 +9,14 @@ import PrivateComponent from "./PrivateComponent";
 
 const SideBar = () => {
   const { pathname } = useLocation();
-  const { theme, toggleTheme } = useTheme();
+  const { isLight, toggleTheme } = useTheme();
   const { logout } = useAuth0();
   const { userData, setUserData } = useUser();
   // const [seleccion, setSeleccion] = useState([true, false, false, false, false]);
   // onClick={() => setSeleccion([true, false, false, false, false])}
   return (
     //w-72: la mitad de una pantalla mediana
-    <nav className={`menu side-bar ${theme ? "menu--light" : "menu--dark"}`}>
+    <nav className={`menu side-bar ${isLight ? "menu--light" : "menu--dark"}`}>
       <ul className="menu__list">
         <Link
           to={"/admin"}
@@ -37,7 +37,7 @@ const SideBar = () => {
         </PrivateComponent>
         <button
           className={`menu__button ${
-            theme ? "menu__button--light" : "menu__button--dark"
+            isLight ? "menu__button--light" : "menu__button--dark"
           }`}
           onClick={() => {
             logout({ logoutParams: { returnTo: window.location.origin } });
@@ -49,7 +49,7 @@ const SideBar = () => {
         </button>
         <button
           className={`menu__button ${
-            theme ? "menu__button--light" : "menu__button--dark"
+            isLight ? "menu__button--light" : "menu__button--dark"
           }`}
           type="button"
           onClick={toggleTheme}
