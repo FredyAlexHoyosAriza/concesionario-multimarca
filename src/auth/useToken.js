@@ -13,7 +13,8 @@ const useToken = () => {
       //No acepta un token válido p. ej. si el back está apagado
       console.error(error);
       logout({ logoutParams: { returnTo: window.location.origin } });
-      localStorage.setItem("token", "");
+      // localStorage.setItem("token", "");
+      localStorage.removeItem('token');
       setUserData("");
     },
     [logout, setUserData]
